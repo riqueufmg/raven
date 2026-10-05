@@ -1,0 +1,4 @@
+DesigniteJava Professional. Version 2.9.1
+Copyright (C) 2026 Designite. All rights reserved.
+License registered successfully.
+Total time (sec): 1

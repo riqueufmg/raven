@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Logs
+log/
+*.log
+
+# Local toolchains
+benchmark/toolchains/java/*
+benchmark/toolchains/maven/*
+benchmark/toolchains/.downloads/
+
+!benchmark/toolchains/java/.gitkeep
+!benchmark/toolchains/maven/.gitkeep
+
+# Cloned repositories and generated reproduction environments
+benchmark/repositories/*/repository/
+benchmark/repositories/*/commits/
+
+# Generated candidate validation artifacts
+candidate_validation/designite/
+candidate_validation/refactorings/
+candidate_validation/pairs/
+#candidate_validation/results.csv
+
+# External tools / binaries
+tools/DesigniteJava.jar
+tools/RefactoringMiner-3.0.7/
+tools/__pycache__/
+
+# Temporary / previous files
+commits.previous.csv
+*.previous.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
