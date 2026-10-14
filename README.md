@@ -248,9 +248,54 @@ Multiple historical commits can be processed using:
 ./run_batch.sh
 ```
 
-The batch runner reads the configured commit dataset and invokes the reproduction pipeline for each target commit.
+The batch runner reads its input from:
 
-Previously completed successful reproductions can be reused instead of being reconstructed again.
+```text
+commits.csv
+```
+
+The expected columns are:
+
+```text
+repository,url,commit
+```
+
+For example:
+
+```csv
+repository,url,commit
+byte-buddy,https://github.com/raphw/byte-buddy.git,ae380bb57643eae40a2ffa7553e6093e256050a7
+dropwizard,https://github.com/dropwizard/dropwizard.git,9e256a...
+spring-batch,https://github.com/spring-projects/spring-batch.git,667a92...
+```
+
+The input file contains the historical commits selected for environment reproduction. For each row, `run_batch.sh` invokes the reproduction pipeline for commit `C`.
+
+The files involved in this stage follow this workflow:
+
+```text
+smell_candidates.csv
+        ↓
+validate_candidates.py
+        ↓
+candidate_validation/results.csv
+        ↓
+candidate selection
+        ↓
+commits.csv
+        ↓
+run_batch.sh
+        ↓
+historical commit reproduction
+```
+
+`smell_candidates.csv` contains candidate smell-removal transitions identified during the mining stage.
+
+`candidate_validation/results.csv` contains the result of applying the candidate-validation filters.
+
+`commits.csv` contains the historical commits selected for build reproduction after candidate validation.
+
+Previously completed environments are reused when possible. Commits with an existing successful reproduction are skipped instead of being reconstructed again.
 
 ## Tools
 
@@ -305,17 +350,15 @@ RAVen/
 │
 ├── benchmark/
 │   ├── repositories/
-│   │   └── <repository>/
-│   │       ├── repository/
-│   │       └── commits/
 │   ├── results/
 │   └── toolchains/
-│       ├── java/
-│       └── maven/
 │
 ├── log/
 ├── tools/
 │
+├── smell_candidates.csv    candidate smell-removal transitions
+├── commits.csv             commits selected for reproduction
+├── repositories.csv        repository metadata
 ├── AGENTS.md
 ├── CODEX_PROMPT.md
 ├── prepare_toolchains.sh
