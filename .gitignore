@@ -29,6 +29,14 @@ tools/DesigniteJava.jar
 tools/RefactoringMiner-3.0.7/
 tools/__pycache__/
 
+# Mining
+mining/repositories/*
+!mining/repositories/.gitkeep
+mining/results/*
+!mining/results/.gitkeep
+mining/log/*
+!mining/log/.gitkeep
+
 # Temporary / previous files
 commits.previous.csv
 *.previous.csv

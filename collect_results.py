@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import csv
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-COMMITS_CSV = ROOT / "commits.csv"
 BENCHMARK = ROOT / "benchmark"
 REPOSITORIES = BENCHMARK / "repositories"
 OUTPUT = BENCHMARK / "results" / "results.csv"
@@ -44,22 +44,73 @@ def get_status(manifest: Path) -> str:
     return "INCOMPLETE"
 
 
-def main():
+def resolve_full_commit(repository_dir: Path, short_commit: str) -> str:
+    """
+    Resolve the commit directory name (normally a 12-character SHA)
+    to the full Git commit SHA using the repository checkout.
+
+    If the commit cannot be resolved, keep the directory name so that
+    the existing environment is still included in the inventory.
+    """
+    repo = repository_dir / "repository"
+
+    if not (repo / ".git").exists():
+        return short_commit
+
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "rev-parse",
+            "--verify",
+            f"{short_commit}^{{commit}}",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if result.returncode == 0:
+        full_commit = result.stdout.strip()
+
+        if full_commit:
+            return full_commit
+
+    return short_commit
+
+
+def collect_rows():
     rows = []
 
-    with COMMITS_CSV.open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+    if not REPOSITORIES.is_dir():
+        return rows
 
-        for entry in reader:
-            repository = entry["repository"].strip()
-            full_commit = entry["commit"].strip()
-            short_commit = full_commit[:12]
+    for repository_dir in sorted(
+        REPOSITORIES.iterdir(),
+        key=lambda path: path.name.casefold(),
+    ):
+        if not repository_dir.is_dir():
+            continue
 
-            env_dir = (
-                REPOSITORIES
-                / repository
-                / "commits"
-                / short_commit
+        commits_dir = repository_dir / "commits"
+
+        if not commits_dir.is_dir():
+            continue
+
+        repository = repository_dir.name
+
+        for env_dir in sorted(
+            commits_dir.iterdir(),
+            key=lambda path: path.name,
+        ):
+            if not env_dir.is_dir():
+                continue
+
+            short_commit = env_dir.name
+            full_commit = resolve_full_commit(
+                repository_dir,
+                short_commit,
             )
 
             manifest = env_dir / "manifest.txt"
@@ -82,6 +133,12 @@ def main():
                 }
             )
 
+    return rows
+
+
+def main():
+    rows = collect_rows()
+
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
     fieldnames = [
@@ -100,7 +157,15 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"Wrote {len(rows)} rows to: {OUTPUT}")
+    pass_count = sum(row["status"] == "PASS" for row in rows)
+    fail_count = sum(row["status"] == "FAIL" for row in rows)
+    incomplete_count = sum(row["status"] == "INCOMPLETE" for row in rows)
+
+    print(f"Environments found: {len(rows)}")
+    print(f"PASS:               {pass_count}")
+    print(f"FAIL:               {fail_count}")
+    print(f"INCOMPLETE:         {incomplete_count}")
+    print(f"Output:              {OUTPUT}")
 
 
 if __name__ == "__main__":
