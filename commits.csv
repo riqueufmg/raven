@@ -241,6 +241,7 @@ openmrs-core,https://github.com/openmrs/openmrs-core,8ed43b6328d59eed6598d0808fb
 openmrs-core,https://github.com/openmrs/openmrs-core,a236d67aeb661160c44200ef42ec443651120fe0
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,02573c1922d84038f26ee3fbff9269bd18473081
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,05e47c29546b4c20954d55b1e76c41c06420d446
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,0600a460aca900d129ff5460645cfe783daad7b4
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,094f3782cd598fbdd6d965d6ae3a710d579dc286
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,0b75d756050343e44dbce85db5725c6f77b78acf
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,0e638dc75fe8542b14a9b3e8172464430e8cc19d
@@ -259,6 +260,7 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,2e52801e4eeb4
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,2e80d97e5b921fdfdd79ae1538a4cf1aa462b2a6
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,35b36da9acf9bec53238b34c18611b8a759eb860
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,386e264dc5bd0b36d0d7718597468c8f97f72d7f
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,3ce7ae521bbd15936f3419522761ca648c364e1e
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,3dcf4e3075053974c499f10ca6142a9872d11dea
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,3e968ddf8b633dcf5a0c516125388f9c5523ff24
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,458e10cea54a83a9300c8d57732e101f5e710e1b
@@ -269,6 +271,7 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,4c8deabfa3c92
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,4cd9b1c4750879132eb6fcdc238dc196f093ec7d
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,4e4ec4070ce8bdf5513c2b8809fd09a8d63fa4c1
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,4e5e742ad2a0538a9236f3382a0ba61e6c71401b
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,54dcffc1756ba2225a09ee6690bc6193a54dcb42
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,5741d14a85c32d3ba32e0c8290e90d7a8b0cb886
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,5930b1589a4b600e33551b77370a577250d6defa
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,5b7dd975ecbdcdb95666c37487bdec652f5a34ef
@@ -295,12 +298,14 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,8e41adad59457
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,8f40911b677444423dda323de250fbec06b6add7
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,8fc27bd7b55b7c19d62cb9b4b6145e510718883a
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,91abeebfd2825fb45170310ae6ecada355b4a760
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,94fd9e427f67f9d401db850001decceaa2d87af9
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,9d87d2d885ce72fdde84ab17c657a1e2b19560b1
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,9f50427549102bf11ff638fcf3d0276c1b94164a
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,9f87779ca897e335b39148f00c29c4c7d44d109a
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,a0b84e7c8f07e7db18fd8c5b09fed0fa78dcb2ab
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,a0f0fe687f1ce8172cdf303e8c923affe7113731
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,a1fe4565205a9f0e6068576528c8fe3c4173b849
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,a4247fd0c045981f8f3908097078049dc73f39cf
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,a5f92085180af858444ddb5e389b7c6c555225b0
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,aa32a1e024cab725901094d7e916c784dadc491a
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,aa587e16ca49929ae35fa263b2c5220fdc39e3b2
@@ -308,8 +313,10 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,aa5b8391bdf06
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,aa8c69b533b28de56900c2e3a30efe7f94baef81
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,aff0726e3e4705b2d8f1d670bdaa0a83b488de48
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b23c3e6655d9960ff0c6ba7296f816d8ca7f4901
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b264ea3bf15abf5f5316827d950ef7ebe94edbe4
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b2adb3190f0af868e4626f03e1c1096441e1ecc6
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b4872d5129e578be7ccaa5c4451d9591f6612498
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b5ecba56b7e330eca9cbbed6c778cd518c12c0f5
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b6d4b77c3d00acf678b680c43427db7e2021800e
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b7dd5fe08e542f47ad5effe7904cf6c20fce5e67
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,b92c8d7aab50ec15596ae6496eed91683d9dbbc9
@@ -331,8 +338,10 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,e960e5735ac3f
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,ee5d435d2ac9dca8cddb4a33ba038b025d27aae1
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f0c56fd15b147f5c0636956b14e0736282321aa8
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f0f2317ca84c98f9d4853bae62195fe09f103ae6
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f0f66ec221e571124b207a2020c8dd6968432b45
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f112b61a09d3a3b3680ef4cf2a95b9f8c1f1ee6f
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f2cfc14d8217dbd2a273741875468b6fd8299635
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f3e8ea8f2a2e4080faf0c44d99cd530107f4390d
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f65163f32598686603238d370bb6fc0df23fc247
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f6dcc5ea003d10b15d9871e80e7a59f6131def68
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,f9477d7e98f2c9c9f3becaf9f3bc8c6f03875573
@@ -341,6 +350,7 @@ opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,fc9346749ac71
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,fe47ade1936ede4e7b1d6914c7c0aab7b7cce106
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,fe61ca7656fcfc5b856d67416336a2fe1f3185d8
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,feb09b2b33b37bdee3837bd99603b0cc3d0bcf14
+opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,ff61cf08415266de7866251161bd3e6bdb2ed00b
 opentripplanner,https://github.com/opentripplanner/OpenTripPlanner,ffab92f04f23640ef0afea609441579c6a3e244d
 pac4j,https://github.com/pac4j/pac4j,133cc2352e2c0f8fad504ac8f16bdfa6c1606faf
 pac4j,https://github.com/pac4j/pac4j,94e462664107fe3cb7dd8c3c0ae38e744834bd44

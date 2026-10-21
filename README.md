@@ -2,7 +2,7 @@
 
 <u>R</u>eal-world <u>A</u>utomated <u>V</u>alidation of R<u>e</u>factori<u>n</u>gs
 
-RAVen is an experimental infrastructure for validating real-world refactorings and reproducing the historical Java/Maven environments in which they occurred.
+RAVen is an experimental infrastructure for mining and validating real-world refactorings and reproducing the historical Java/Maven environments in which they occurred.
 
 The repository supports an ongoing empirical study on automated refactoring.
 
@@ -16,9 +16,13 @@ A stable version of the repository will be archived when the final experimental 
 
 ## Workflow
 
-The current workflow is organized into two main stages:
+The current workflow is organized into three main stages:
 
 ```text
+Repository history
+        ↓
+Smell-removal mining
+        ↓
 Candidate transition
         ↓
 Candidate validation
@@ -34,26 +38,30 @@ Offline Maven validation
 Reproducible benchmark instance
 ```
 
+Mining identifies transitions in which a design or architecture smell disappears between analyzed commits.
+
 Candidate validation determines whether a transition represents a valid smell-removal refactoring.
 
 Historical commit reproduction is performed separately and determines whether the commit containing the smell can be successfully built and tested in a reconstructed environment.
 
 ## Requirements
 
-RAVen requires:
+The complete RAVen pipeline may require:
 
 - Python 3;
 - Git;
-- Codex CLI;
 - DesigniteJava;
 - RefactoringMiner;
+- Codex CLI;
 - local Java and Maven toolchains prepared by RAVen.
+
+Not every stage requires every dependency. Smell mining uses Git, Python, and DesigniteJava. Candidate validation additionally uses RefactoringMiner. Historical commit reproduction uses Codex CLI and the local Java/Maven toolchains.
 
 The Codex CLI must be installed, configured, and authenticated before running the reproduction pipeline.
 
 ## Prepare Environment
 
-The project uses local Java and Maven installations stored under:
+The reproduction stage uses local Java and Maven installations stored under:
 
 ```text
 benchmark/toolchains/
@@ -65,7 +73,7 @@ To download the required toolchains, run:
 ./prepare_toolchains.sh
 ```
 
-The script prepares the following toolchains:
+The script prepares the following toolchains.
 
 ### Java
 
@@ -85,7 +93,154 @@ The script prepares the following toolchains:
 
 Downloaded toolchains are not versioned in Git.
 
-## Candidate Validation
+# Build/Extend the Benchmark
+
+RAVen provides the scripts used to construct and extend the benchmark from repository histories.
+
+The process starts by mining candidate smell-removal transitions, validates the resulting commit pairs, and finally reconstructs the historical build environment of selected commits.
+
+## 1. Mine Candidate Transitions
+
+The mining pipeline is located under:
+
+```text
+mining/
+```
+
+It analyzes Java repositories with DesigniteJava and identifies transitions in which one of the considered smells disappears.
+
+The currently considered smells are:
+
+- Insufficient Modularization (IM);
+- Hub-like Modularization (HM);
+- God Component (GC);
+- Unstable Dependency (UD).
+
+### Mining Input
+
+The repository list is stored in:
+
+```text
+mining/repositories.csv
+```
+
+The current list contains repository metadata used by the batch runner, including repository name, default branch, commit count, and language metrics.
+
+The batch runner orders pending repositories using the heuristic:
+
+```text
+commit count × Java LOC
+```
+
+Repositories with existing result directories are skipped.
+
+### Mining Layout
+
+Mining artifacts are kept separate from benchmark reproduction artifacts:
+
+```text
+mining/
+├── repositories.csv
+├── search_candidates.py
+├── analyze_results.py
+├── collect_smell_candidates.py
+├── run_search_batch.sh
+├── repositories/          local repository clones
+├── results/               DesigniteJava and candidate outputs
+└── log/                   mining logs
+```
+
+The local clone, result, and log directories are execution artifacts and are not versioned.
+
+DesigniteJava is shared with the rest of RAVen through:
+
+```text
+tools/DesigniteJava.jar
+```
+
+### Preview a Mining Batch
+
+Before starting a batch, the selected repositories can be inspected without cloning or analyzing anything:
+
+```bash
+./mining/run_search_batch.sh 20 3 --dry-run
+```
+
+The first argument is the maximum number of repositories selected for the batch and the second is the number of parallel workers.
+
+The dry run prints the execution queue and writes:
+
+```text
+mining/repos_to_run_sorted.tsv
+```
+
+without cloning repositories or invoking DesigniteJava.
+
+### Run a Mining Batch
+
+To run the selected repositories:
+
+```bash
+./mining/run_search_batch.sh 20 3
+```
+
+Each repository is cloned under:
+
+```text
+mining/repositories/<repository>/
+```
+
+DesigniteJava results are written under:
+
+```text
+mining/results/<repository>/
+```
+
+and the corresponding execution log is written under:
+
+```text
+mining/log/<repository>.log
+```
+
+The batch uses regular DesigniteJava commit analysis (`-ac`).
+
+### Analyze One Repository
+
+After DesigniteJava finishes processing a repository, candidate transitions for all four smells can be extracted with:
+
+```bash
+python -m mining.analyze_results \
+  --repo mining/repositories/<repository> \
+  --results-root mining/results \
+  --branch refs/heads/<branch>
+```
+
+The generated files are stored under:
+
+```text
+mining/results/<repository>/candidates/
+├── IM_candidates.csv
+├── HM_candidates.csv
+├── GC_candidates.csv
+└── UD_candidates.csv
+```
+
+A `smell_removed_candidate` represents a direct parent-child transition in which the target entity still exists after the transition and the smell is no longer reported in the subsequent analyzed commit.
+
+These mining results are candidate transitions only. They do not by themselves establish that a refactoring removed the smell.
+
+### Consolidate Candidates
+
+Candidate files produced for individual repositories can be consolidated with:
+
+```bash
+python -m mining.collect_smell_candidates \
+  --results-root mining/results
+```
+
+The consolidated candidate set is used as input to the validation stage.
+
+## 2. Validate Candidate Transitions
 
 Historical smell-removal candidates are validated before build reproduction.
 
@@ -98,13 +253,6 @@ The validation pipeline receives candidate transitions containing information su
 - target entity;
 - commit containing the smell (`C`);
 - subsequent commit where the smell appears to have been removed (`C'`).
-
-The currently considered smells are:
-
-- Insufficient Modularization (IM);
-- Hub-like Modularization (HM);
-- God Component (GC);
-- Unstable Dependency (UD).
 
 ### Validation Criteria
 
@@ -120,8 +268,6 @@ Build reproducibility is evaluated separately after candidate validation.
 
 ### Validate One Candidate
 
-A single candidate can be validated with:
-
 ```bash
 python validate_pair.py \
   --repo <repository-url> \
@@ -133,19 +279,11 @@ python validate_pair.py \
 
 ### Validate a Candidate Dataset
 
-Candidate datasets can be validated with:
-
 ```bash
 python validate_candidates.py
 ```
 
 Validation artifacts are stored under:
-
-```text
-candidate_validation/
-```
-
-This directory may contain:
 
 ```text
 candidate_validation/
@@ -155,7 +293,7 @@ candidate_validation/
 └── results.csv      consolidated validation results
 ```
 
-## Historical Commit Reproduction
+## 3. Reproduce Historical Commits
 
 After candidate validation, RAVen attempts to reproduce the environment of the historical commit containing the smell.
 
@@ -171,7 +309,7 @@ RAVen attempts to reconstruct the build environment without modifying tracked pr
 
 The historical commit is treated as the artifact to reproduce. The objective is to reconstruct a compatible environment, not to repair the project.
 
-## Codex
+### Codex Environment Reconstruction
 
 RAVen uses the Codex CLI to investigate and reconstruct build environments for historical commits.
 
@@ -196,7 +334,7 @@ Codex must not modify tracked project source files, tests, POM files, wrapper fi
 
 The environment produced by Codex is subsequently validated by RAVen outside the Codex execution.
 
-## Reproduction Output
+### Reproduction Output
 
 Each reproduction environment is stored under:
 
@@ -222,7 +360,7 @@ The repository checkout itself is stored separately under:
 benchmark/repositories/<repository>/repository/
 ```
 
-## Reproduction Validation
+### Reproduction Validation
 
 A reproduction is considered successful only when the generated environment can execute the historical commit tests successfully in offline mode.
 
@@ -240,7 +378,7 @@ An online execution of the same reconstructed environment can also be performed 
 
 Offline execution is used as the reproducibility criterion.
 
-## Batch Execution
+### Batch Reproduction
 
 Multiple historical commits can be processed using:
 
@@ -274,7 +412,7 @@ The input file contains the historical commits selected for environment reproduc
 The files involved in this stage follow this workflow:
 
 ```text
-smell_candidates.csv
+mining candidate transitions
         ↓
 validate_candidates.py
         ↓
@@ -288,8 +426,6 @@ run_batch.sh
         ↓
 historical commit reproduction
 ```
-
-`smell_candidates.csv` contains candidate smell-removal transitions identified during the mining stage.
 
 `candidate_validation/results.csv` contains the result of applying the candidate-validation filters.
 
@@ -324,13 +460,19 @@ The versions used in the final study should be preserved in the corresponding ex
 
 ## Logs
 
-Execution logs are stored under:
+Historical reproduction logs are stored under:
 
 ```text
 log/
 ```
 
-This directory contains logs generated during batch processing and historical environment reproduction.
+Mining logs are stored separately under:
+
+```text
+mining/log/
+```
+
+These directories contain execution artifacts generated during batch processing, candidate mining, and historical environment reproduction.
 
 Repository-specific and batch-level logs can be used to inspect failures and execution progress.
 
@@ -342,6 +484,16 @@ A simplified view of the repository is:
 
 ```text
 RAVen/
+├── mining/
+│   ├── repositories.csv
+│   ├── search_candidates.py
+│   ├── analyze_results.py
+│   ├── collect_smell_candidates.py
+│   ├── run_search_batch.sh
+│   ├── repositories/
+│   ├── results/
+│   └── log/
+│
 ├── candidate_validation/
 │   ├── designite/
 │   ├── refactorings/
@@ -356,9 +508,7 @@ RAVen/
 ├── log/
 ├── tools/
 │
-├── smell_candidates.csv    candidate smell-removal transitions
 ├── commits.csv             commits selected for reproduction
-├── repositories.csv        repository metadata
 ├── AGENTS.md
 ├── CODEX_PROMPT.md
 ├── prepare_toolchains.sh
@@ -372,6 +522,8 @@ RAVen/
 ## Scope
 
 RAVen currently targets historical Java projects built with Maven.
+
+The mining and validation pipeline targets design and architecture smell-removal transitions in Java repository histories.
 
 The reproduction pipeline focuses on reconstructing the environment required by a historical commit.
 
