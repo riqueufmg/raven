@@ -957,6 +957,15 @@ def main():
     )
 
     parser.add_argument(
+        "--repository-name",
+        default="",
+        help=(
+            "Canonical repository name used by the caller. "
+            "If omitted, the name is derived from --repo."
+        ),
+    )
+
+    parser.add_argument(
         "--c",
         required=True,
         help=(
@@ -992,8 +1001,9 @@ def main():
 
     args = parser.parse_args()
 
-    repository = repository_name(
-        args.repo
+    repository = (
+        args.repository_name.strip()
+        or repository_name(args.repo)
     )
 
     c = (
