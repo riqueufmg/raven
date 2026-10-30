@@ -387,6 +387,10 @@ def run_validate_pair(
         str(VALIDATE_PAIR),
         "--repo",
         url,
+        "--repository-name",
+        repository,
+        "--validation-root",
+        str(VALIDATION_ROOT),
         "--c",
         c,
         "--cprime",
@@ -702,6 +706,12 @@ def load_existing_results():
 
 def main():
 
+    global CANDIDATES_CSV
+    global REPOSITORIES_CSV
+    global VALIDATION_ROOT
+    global RESULTS_CSV
+    global COMMITS_CSV
+
     parser = argparse.ArgumentParser(
         description=(
             "Validate all historical smell-removal "
@@ -715,12 +725,90 @@ def main():
         "--resume",
         action="store_true",
         help=(
-            "Reuse rows already present in "
-            "candidate_validation/results.csv."
+            "Reuse rows already present in the configured results CSV."
+        ),
+    )
+
+    parser.add_argument(
+        "--candidates",
+        type=Path,
+        default=CANDIDATES_CSV,
+        help=(
+            "Candidate CSV to validate. "
+            "Default: smell_candidates.csv."
+        ),
+    )
+
+    parser.add_argument(
+        "--repositories-file",
+        type=Path,
+        default=REPOSITORIES_CSV,
+        help=(
+            "CSV mapping repository names to URLs. "
+            "Default: repositories.csv."
+        ),
+    )
+
+    parser.add_argument(
+        "--validation-root",
+        type=Path,
+        default=VALIDATION_ROOT,
+        help=(
+            "Directory used for validation caches and pair results. "
+            "Default: candidate_validation."
+        ),
+    )
+
+    parser.add_argument(
+        "--results",
+        type=Path,
+        help=(
+            "Detailed validation results CSV. "
+            "Default: <validation-root>/results.csv."
+        ),
+    )
+
+    parser.add_argument(
+        "--commits",
+        type=Path,
+        default=COMMITS_CSV,
+        help=(
+            "Output CSV containing valid commits for reproduction. "
+            "Default: commits.csv."
         ),
     )
 
     args = parser.parse_args()
+
+    CANDIDATES_CSV = (
+        args.candidates
+        .expanduser()
+        .resolve()
+    )
+
+    REPOSITORIES_CSV = (
+        args.repositories_file
+        .expanduser()
+        .resolve()
+    )
+
+    VALIDATION_ROOT = (
+        args.validation_root
+        .expanduser()
+        .resolve()
+    )
+
+    RESULTS_CSV = (
+        args.results.expanduser().resolve()
+        if args.results
+        else VALIDATION_ROOT / "results.csv"
+    )
+
+    COMMITS_CSV = (
+        args.commits
+        .expanduser()
+        .resolve()
+    )
 
     repositories = (
         load_repositories()

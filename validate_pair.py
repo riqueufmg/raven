@@ -941,6 +941,11 @@ def reject(
 
 def main():
 
+    global VALIDATION_ROOT
+    global DESIGNITE_ROOT
+    global REFACTORING_ROOT
+    global PAIRS_ROOT
+
     parser = argparse.ArgumentParser(
         description=(
             "Validate one historical smell-removal "
@@ -999,7 +1004,38 @@ def main():
         ),
     )
 
+    parser.add_argument(
+        "--validation-root",
+        type=Path,
+        default=VALIDATION_ROOT,
+        help=(
+            "Directory used for validation caches and pair results. "
+            "Default: candidate_validation."
+        ),
+    )
+
     args = parser.parse_args()
+
+    VALIDATION_ROOT = (
+        args.validation_root
+        .expanduser()
+        .resolve()
+    )
+
+    DESIGNITE_ROOT = (
+        VALIDATION_ROOT
+        / "designite"
+    )
+
+    REFACTORING_ROOT = (
+        VALIDATION_ROOT
+        / "refactorings"
+    )
+
+    PAIRS_ROOT = (
+        VALIDATION_ROOT
+        / "pairs"
+    )
 
     repository = (
         args.repository_name.strip()

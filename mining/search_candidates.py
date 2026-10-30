@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
 """
-Run DesigniteJava over a commit range and identify candidate smell removals.
+Run DesigniteJava over a commit range and optionally identify candidate
+smell removals.
 
-Example:
+Mining-only example:
+    python -m mining.search_candidates \
+        --repo mining/repositories/jsoup \
+        --date 07-31-2023 \
+        --designite-jar tools/DesigniteJava.jar \
+        --output mining/results/jsoup \
+        --branch refs/heads/master \
+        --regular \
+        --overwrite
+
+Backward-compatible candidate-analysis example:
     python -m mining.search_candidates \
         --repo mining/repositories/jsoup \
         --date 07-31-2023 \
@@ -21,7 +32,7 @@ DesigniteJava output expected:
         ArchitectureSmells.csv
         ...
 
-The script generates:
+When --smell is supplied, the script also generates:
 
     <output>/candidates.csv
     <output>/analysis_manifest.json
@@ -708,8 +719,8 @@ def write_manifest(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Run DesigniteJava over a date-based commit range and identify "
-            "candidate transitions where a selected smell disappears."
+            "Run DesigniteJava over a date-based commit range and optionally "
+            "identify candidate transitions for a selected smell."
         )
     )
 
@@ -728,12 +739,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--smell",
-        required=True,
         type=normalize_smell,
         help=(
-            "Smell name or alias: Insufficient Modularization (IM), "
-            "Hub-like Modularization (HM), God Component (GC), "
-            "or Unstable Dependency (UD)."
+            "Optional smell name or alias used for candidate analysis: "
+            "Insufficient Modularization (IM), Hub-like Modularization (HM), "
+            "God Component (GC), or Unstable Dependency (UD). "
+            "If omitted, only the DesigniteJava mining stage is executed."
         ),
     )
     parser.add_argument(
@@ -820,7 +831,10 @@ def main() -> int:
     print(f"First commit:  {first_commit}", file=sys.stderr)
     print(f"Last commit:   {last_commit}", file=sys.stderr)
     print(f"Commit count:  {len(commits)}", file=sys.stderr)
-    print(f"Smell:         {args.smell}", file=sys.stderr)
+    if args.smell:
+        print(f"Smell:         {args.smell}", file=sys.stderr)
+    else:
+        print("Smell:         none (mining only)", file=sys.stderr)
     print(f"Mode:          {mode}", file=sys.stderr)
 
     if args.skip_analysis:
@@ -844,6 +858,11 @@ def main() -> int:
             java_command=args.java,
             optimized=not args.regular,
         )
+
+    if not args.smell:
+        print("Mining completed. Candidate analysis was not requested.")
+        print(f"Results:               {output}")
+        return 0
 
     candidates, _ = find_candidates(
         repo=repo,

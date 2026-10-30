@@ -56,11 +56,27 @@ def normalize_smells(values):
     return result
 
 
-def find_candidate_files(results_root: Path, smells):
+def find_candidate_files(
+    results_root: Path,
+    smells,
+    repositories=None,
+):
     found = []
+
+    selected_repositories = (
+        set(repositories)
+        if repositories
+        else None
+    )
 
     for repo_dir in sorted(results_root.iterdir()):
         if not repo_dir.is_dir():
+            continue
+
+        if (
+            selected_repositories is not None
+            and repo_dir.name not in selected_repositories
+        ):
             continue
 
         candidates_dir = repo_dir / "candidates"
@@ -168,6 +184,16 @@ def main():
     )
 
     parser.add_argument(
+        "--repositories",
+        nargs="+",
+        metavar="REPOSITORY",
+        help=(
+            "Repository directory names to include. "
+            "Defaults to all repositories under --results-root."
+        ),
+    )
+
+    parser.add_argument(
         "--output",
         type=Path,
         help="Output CSV path. Default: <results-root>/smell_candidates.csv.",
@@ -198,7 +224,11 @@ def main():
         else results_root / "smell_candidates.csv"
     )
 
-    candidate_files = find_candidate_files(results_root, smells)
+    candidate_files = find_candidate_files(
+        results_root,
+        smells,
+        args.repositories,
+    )
 
     if not candidate_files:
         raise RuntimeError(

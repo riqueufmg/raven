@@ -1,0 +1,24 @@
+repository:
+  url: https://github.com/javaparser/javaparser.git
+  branch: master
+
+analysis:
+  since: "01-01-2026"
+  smells:
+    - IM
+    - HM
+    - GC
+    - UD
+
+mining:
+  overwrite: false
+
+paths:
+  repositories: mining/repositories
+  mining_results: mining/results
+  candidate_validation: candidate_validation
+  benchmark: benchmark
+  benchmark_results: benchmark/results
+  designite: tools/DesigniteJava.jar
+  refactoring_miner: tools/RefactoringMiner-3.0.7
+  smell_registry: config/smells.yml

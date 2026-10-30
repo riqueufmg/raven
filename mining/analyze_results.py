@@ -318,14 +318,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Read DesigniteJava results for one repository and generate "
-            "candidate-removal CSVs for IM, HM, GC, and UD."
+            "candidate-removal CSVs for selected smells."
         )
     )
     parser.add_argument(
         "--repo",
         required=True,
         type=Path,
-        help="Git repository path, e.g. data/repositories/javaparser",
+        help="Git repository path, e.g. mining/repositories/javaparser",
     )
     parser.add_argument(
         "--results-root",
@@ -333,12 +333,23 @@ def main() -> int:
         type=Path,
         help=(
             "Root containing <repo_name>/<commit_hash>/, "
-            "e.g. samples/results"
+            "e.g. mining/results"
         ),
     )
     parser.add_argument(
         "--branch",
         help="Branch used for Git ordering. Defaults to current branch.",
+    )
+    parser.add_argument(
+        "--smells",
+        nargs="+",
+        choices=sorted(SMELLS),
+        default=list(SMELLS),
+        metavar="SMELL",
+        help=(
+            "Smell aliases to analyze. "
+            "Defaults to all currently supported smells."
+        ),
     )
     parser.add_argument(
         "--output",
@@ -378,7 +389,7 @@ def main() -> int:
     print(f"Commits:    {len(commits)}")
     print(f"Output:     {output}")
 
-    for alias in ("IM", "HM", "GC", "UD"):
+    for alias in args.smells:
         rows = analyze_smell(
             repo=repo,
             repo_results=repo_results,

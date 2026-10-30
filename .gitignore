@@ -14,6 +14,10 @@ benchmark/toolchains/.downloads/
 !benchmark/toolchains/java/.gitkeep
 !benchmark/toolchains/maven/.gitkeep
 
+# RAVen CLI background jobs
+jobs/
+logs/
+
 # Manual Analysis
 manual_analysis/
 organize_manual_analysis.py
@@ -23,11 +27,15 @@ static_analysis_artifacts.csv
 benchmark/repositories/*/repository/
 benchmark/repositories/*/commits/
 
-# Generated candidate validation artifacts
+# Generated candidate validation caches - legacy layout
 candidate_validation/designite/
 candidate_validation/refactorings/
 candidate_validation/pairs/
-#candidate_validation/results.csv
+
+# Generated candidate validation caches - repository layout
+candidate_validation/*/designite/
+candidate_validation/*/refactorings/
+candidate_validation/*/pairs/
 
 # External tools / binaries
 tools/DesigniteJava.jar

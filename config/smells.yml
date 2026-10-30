@@ -1,0 +1,36 @@
+smells:
+  IM:
+    display_name: Insufficient Modularization
+    granularity: class
+    detector:
+      tool: designite
+      category: design
+      artifact: DesignSmells.csv
+      smell_name: Insufficient Modularization
+
+  HM:
+    display_name: Hub-like Modularization
+    granularity: class
+    detector:
+      tool: designite
+      category: design
+      artifact: DesignSmells.csv
+      smell_name: Hub-like Modularization
+
+  GC:
+    display_name: God Component
+    granularity: package
+    detector:
+      tool: designite
+      category: architecture
+      artifact: ArchitectureSmells.csv
+      smell_name: God Component
+
+  UD:
+    display_name: Unstable Dependency
+    granularity: package
+    detector:
+      tool: designite
+      category: architecture
+      artifact: ArchitectureSmells.csv
+      smell_name: Unstable Dependency
