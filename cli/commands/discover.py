@@ -10,7 +10,7 @@ from cli.jobs import (
     start_job,
 )
 from cli.repository import (
-    prepare_repository,
+    repository_name_from_url,
 )
 
 
@@ -36,20 +36,10 @@ def run_discovery(
         "repository"
     ]
 
-    paths = config[
-        "paths"
-    ]
-
-    repo_path = prepare_repository(
-        url=repository["url"],
-        branch=repository["branch"],
-        repositories_root=(
-            paths["repositories"]
-        ),
-    )
-
     repo_name = (
-        repo_path.name
+        repository_name_from_url(
+            repository["url"]
+        )
     )
 
     active = find_active_job(

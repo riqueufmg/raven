@@ -85,6 +85,135 @@ Historical commit reproduction uses Codex CLI and the preserved Java and Maven t
 
 The Codex CLI must be installed, configured, and authenticated before running the reproduction pipeline.
 
+## Install Python Dependencies
+
+Install the Python dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
+
+The current Python dependencies are:
+
+- `pandas`;
+- `psutil`;
+- `PyYAML`;
+- `streamlit`;
+- `typer`.
+
+# RAVen Web Interface
+
+RAVen provides a Streamlit-based graphical interface for the main discovery, monitoring, candidate inspection, reproduction, and results workflows.
+
+Start the interface with:
+
+```bash
+python -m streamlit run ui/app.py \
+  --server.address 127.0.0.1 \
+  --server.port 8501
+```
+
+When RAVen is executed on a remote server, the interface can be accessed through SSH or IDE port forwarding without exposing the Streamlit port publicly.
+
+The current interface contains four pages:
+
+```text
+Discovery
+Jobs
+Candidates
+Results
+```
+
+## Discovery
+
+The **Discovery** page configures and starts the complete discovery pipeline.
+
+It allows the user to define:
+
+- repository URL;
+- repository branch;
+- starting date for historical analysis;
+- enabled smells;
+- whether discovery should restart from the beginning.
+
+The analysis date is entered using the `DD-MM-YYYY` format.
+
+Starting discovery from the graphical interface updates `config/raven.yml` and creates the same background discovery job used by the CLI.
+
+## Jobs
+
+The **Jobs** page monitors discovery and reproduction jobs.
+
+It displays:
+
+- repository;
+- task type;
+- target commit, when applicable;
+- semantic execution phase;
+- start and finish timestamps;
+- process identifier;
+- exit code;
+- background log output.
+
+The page also displays machine resource information, including:
+
+- total CPU usage;
+- total RAM usage;
+- available RAM;
+- total RAM;
+- physical and logical CPU counts.
+
+For active jobs, RAVen also reports CPU and RAM consumption for the job process and its descendant processes. This allows resource usage from child processes such as Codex, Maven, and Java to be included in the displayed job consumption.
+
+Resource information is refreshed periodically while the page is open.
+
+## Candidates
+
+The **Candidates** page displays validated smell-removal candidates grouped by historical commit.
+
+Because several validated smell instances may belong to the same commit, the interface distinguishes:
+
+- candidate instances;
+- unique reproduction targets.
+
+For each reproduction target, the page displays its smell instances, target entities, and reproduction state.
+
+A historical commit that has not yet been reproduced can be submitted directly for reproduction from this page.
+
+## Results
+
+The **Results** page summarizes the current repository dataset and reproduction progress.
+
+It reports:
+
+- number of valid candidate instances;
+- number of unique reproduction targets;
+- successfully reproduced targets;
+- targets not yet reproduced;
+- reproduction completion progress;
+- candidate distribution by smell;
+- reproduction target distribution by status.
+
+The page also provides filters for smell and reproduction status and a consolidated reproduction-target table.
+
+The current smell presentation order is:
+
+```text
+IM
+HM
+GC
+UD
+```
+
+The current reproduction-status order is:
+
+```text
+Not reproduced
+Running
+Existing
+Reproduced
+```
+
 # RAVen CLI
 
 RAVen provides a unified command-line interface for the main workflow.
@@ -155,7 +284,7 @@ paths:
   smell_registry: config/smells.yml
 ```
 
-The command-line interface and the future graphical interface use this configuration to identify the repository, branch, historical analysis period, enabled smells, and artifact locations.
+The command-line interface and the graphical interface use this configuration to identify the repository, branch, historical analysis period, enabled smells, and artifact locations.
 
 # Background Jobs
 
@@ -186,6 +315,8 @@ Each job records information such as:
 - finish time;
 - exit code;
 - log location.
+
+The graphical interface additionally monitors machine CPU and RAM usage. For active jobs, resource consumption is calculated from the job process together with its descendant processes so that subprocesses such as Codex, Maven, and Java are included.
 
 Different repositories may be processed concurrently.
 
@@ -1051,6 +1182,15 @@ RAVen/
 │   ├── raven.yml
 │   └── smells.yml
 │
+├── ui/
+│   ├── app.py
+│   └── services/
+│       ├── candidates_service.py
+│       ├── config_service.py
+│       ├── jobs_service.py
+│       ├── resources_service.py
+│       └── results_service.py
+│
 ├── mining/
 │   ├── repositories.csv
 │   ├── search_candidates.py
@@ -1097,6 +1237,7 @@ RAVen/
 │
 ├── AGENTS.md
 ├── CODEX_PROMPT.md
+├── requirements.txt
 ├── prepare_toolchains.sh
 ├── repro.py
 ├── run_batch.sh

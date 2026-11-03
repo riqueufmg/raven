@@ -1,18 +1,15 @@
 repository:
-  url: https://github.com/javaparser/javaparser.git
+  url: https://github.com/jitsi/jitsi.git
   branch: master
-
 analysis:
-  since: "01-01-2026"
+  since: 11-11-2020
   smells:
-    - IM
-    - HM
-    - GC
-    - UD
-
+  - IM
+  - HM
+  - GC
+  - UD
 mining:
   overwrite: false
-
 paths:
   repositories: mining/repositories
   mining_results: mining/results
