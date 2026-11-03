@@ -1,2 +1,5 @@
+pandas
+psutil
 pyyaml
+streamlit
 typer
