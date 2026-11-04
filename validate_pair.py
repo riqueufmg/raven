@@ -64,6 +64,19 @@ PAIRS_ROOT = (
     / "pairs"
 )
 
+MINING_RESULTS_ROOT = (
+    ROOT
+    / "mining"
+    / "results"
+)
+
+
+MINING_REPOSITORIES_ROOT = (
+    ROOT
+    / "mining"
+    / "repositories"
+)
+
 
 # ----------------------------------------------------------------------
 # Smells
@@ -607,6 +620,51 @@ def run_designite(
     return output_dir
 
 
+def designite_output_for_commit(
+    repository: str,
+    repo: Path,
+    commit: str,
+    smell_alias: str,
+) -> Path:
+
+    definition = SMELLS[
+        smell_alias
+    ]
+
+    historical_output = (
+        MINING_RESULTS_ROOT
+        / repository
+        / commit
+    )
+
+    expected_file = (
+        historical_output
+        / definition[
+            "file"
+        ]
+    )
+
+    if expected_file.is_file():
+        print(
+            f"Designite historical result: "
+            f"{repository} "
+            f"{commit[:12]}"
+        )
+        return historical_output
+
+    print(
+        f"Historical Designite result not found for "
+        f"{repository} {commit[:12]}; "
+        "running Designite as fallback."
+    )
+
+    return run_designite(
+        repository,
+        repo,
+        commit,
+    )
+
+
 def smell_exists(
     output_dir: Path,
     smell_alias: str,
@@ -945,6 +1003,7 @@ def main():
     global DESIGNITE_ROOT
     global REFACTORING_ROOT
     global PAIRS_ROOT
+    global MINING_RESULTS_ROOT
 
     parser = argparse.ArgumentParser(
         description=(
@@ -1014,6 +1073,28 @@ def main():
         ),
     )
 
+    parser.add_argument(
+        "--mining-results-root",
+        type=Path,
+        default=MINING_RESULTS_ROOT,
+        help=(
+            "Root containing historical Designite results. "
+            "Default: mining/results."
+        ),
+    )
+
+
+    parser.add_argument(
+        "--repository-path",
+        type=Path,
+        help=(
+            "Existing local Git repository used for validation. "
+            "If omitted, defaults to "
+            "mining/repositories/<repository-name>. "
+            "Validation never clones into benchmark/repositories."
+        ),
+    )
+
     args = parser.parse_args()
 
     VALIDATION_ROOT = (
@@ -1035,6 +1116,12 @@ def main():
     PAIRS_ROOT = (
         VALIDATION_ROOT
         / "pairs"
+    )
+
+    MINING_RESULTS_ROOT = (
+        args.mining_results_root
+        .expanduser()
+        .resolve()
     )
 
     repository = (
@@ -1111,9 +1198,32 @@ def main():
     # Repository
     # --------------------------------------------------------------
 
-    repo = ensure_repository(
-        repository,
-        args.repo,
+    repo = (
+        args.repository_path
+        .expanduser()
+        .resolve()
+        if args.repository_path
+        else (
+            MINING_REPOSITORIES_ROOT
+            / repository
+        ).resolve()
+    )
+
+    if not repo.is_dir():
+        raise RuntimeError(
+            "Mining repository not found: "
+            f"{repo}. Candidate validation reuses the "
+            "existing mining clone and does not clone "
+            "repositories into benchmark/repositories."
+        )
+
+    if not (repo / ".git").exists():
+        raise RuntimeError(
+            f"Not a Git repository: {repo}"
+        )
+
+    print(
+        f"Using mining repository: {repo}"
     )
 
     ensure_commits(
@@ -1216,10 +1326,11 @@ def main():
     )
 
     c_output = (
-        run_designite(
+        designite_output_for_commit(
             repository,
             repo,
             c,
+            smell,
         )
     )
 
@@ -1252,10 +1363,11 @@ def main():
         return 1
 
     cprime_output = (
-        run_designite(
+        designite_output_for_commit(
             repository,
             repo,
             cprime,
+            smell,
         )
     )
 

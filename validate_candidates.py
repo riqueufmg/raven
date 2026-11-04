@@ -24,6 +24,10 @@ VALIDATE_PAIR = ROOT / "validate_pair.py"
 VALIDATION_ROOT = ROOT / "candidate_validation"
 RESULTS_CSV = VALIDATION_ROOT / "results.csv"
 
+MINING_RESULTS_ROOT = ROOT / "mining" / "results"
+
+MINING_REPOSITORIES_ROOT = ROOT / "mining" / "repositories"
+
 COMMITS_CSV = ROOT / "commits.csv"
 
 
@@ -389,8 +393,15 @@ def run_validate_pair(
         url,
         "--repository-name",
         repository,
+        "--repository-path",
+        str(
+            MINING_REPOSITORIES_ROOT
+            / repository
+        ),
         "--validation-root",
         str(VALIDATION_ROOT),
+        "--mining-results-root",
+        str(MINING_RESULTS_ROOT),
         "--c",
         c,
         "--cprime",
@@ -710,6 +721,8 @@ def main():
     global REPOSITORIES_CSV
     global VALIDATION_ROOT
     global RESULTS_CSV
+    global MINING_RESULTS_ROOT
+    global MINING_REPOSITORIES_ROOT
     global COMMITS_CSV
 
     parser = argparse.ArgumentParser(
@@ -769,6 +782,26 @@ def main():
     )
 
     parser.add_argument(
+        "--repositories-root",
+        type=Path,
+        default=MINING_REPOSITORIES_ROOT,
+        help=(
+            "Root containing existing mining repository clones. "
+            "Default: mining/repositories."
+        ),
+    )
+
+    parser.add_argument(
+        "--mining-results-root",
+        type=Path,
+        default=MINING_RESULTS_ROOT,
+        help=(
+            "Root containing historical Designite results. "
+            "Default: mining/results."
+        ),
+    )
+
+    parser.add_argument(
         "--commits",
         type=Path,
         default=COMMITS_CSV,
@@ -792,6 +825,12 @@ def main():
         .resolve()
     )
 
+    MINING_REPOSITORIES_ROOT = (
+        args.repositories_root
+        .expanduser()
+        .resolve()
+    )
+
     VALIDATION_ROOT = (
         args.validation_root
         .expanduser()
@@ -802,6 +841,12 @@ def main():
         args.results.expanduser().resolve()
         if args.results
         else VALIDATION_ROOT / "results.csv"
+    )
+
+    MINING_RESULTS_ROOT = (
+        args.mining_results_root
+        .expanduser()
+        .resolve()
     )
 
     COMMITS_CSV = (
