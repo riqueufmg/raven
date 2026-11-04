@@ -358,6 +358,79 @@ def select_commit_interactively(
     )
 
 
+def resolve_validation_repository(
+    *,
+    candidate_validation_root: Path,
+    repository_name: str,
+) -> str:
+    """
+    Resolve the canonical repository directory used by candidate validation.
+
+    Repository names derived from Git URLs may differ only by letter case from
+    the directory created during candidate validation. Linux paths are
+    case-sensitive, so use the existing validation directory name whenever a
+    unique case-insensitive match exists.
+    """
+    direct = (
+        candidate_validation_root
+        / repository_name
+    )
+
+    if (
+        direct.is_dir()
+        and (
+            direct
+            / "results.csv"
+        ).is_file()
+    ):
+        return direct.name
+
+    if not candidate_validation_root.is_dir():
+        raise ReproductionError(
+            "Candidate validation root was not found: "
+            f"{candidate_validation_root}"
+        )
+
+    matches = [
+        path
+        for path
+        in candidate_validation_root.iterdir()
+        if (
+            path.is_dir()
+            and path.name.casefold()
+            == repository_name.casefold()
+            and (
+                path
+                / "results.csv"
+            ).is_file()
+        )
+    ]
+
+    if not matches:
+        raise ReproductionError(
+            "Validated candidate results were not found "
+            "for repository "
+            f"'{repository_name}' under "
+            f"{candidate_validation_root}."
+        )
+
+    if len(matches) > 1:
+        raise ReproductionError(
+            "Multiple candidate validation directories "
+            "match repository "
+            f"'{repository_name}': "
+            + ", ".join(
+                sorted(
+                    path.name
+                    for path
+                    in matches
+                )
+            )
+        )
+
+    return matches[0].name
+
+
 def run_reproduction(
     config_path: str | Path,
     commit: str | None = None,
@@ -388,16 +461,25 @@ def run_reproduction(
         ),
     )
 
-    repository = (
-        repo_path.name
-    )
-
-    validation_root = (
+    candidate_validation_root = (
         Path(
             paths[
                 "candidate_validation"
             ]
         )
+    )
+
+    repository = (
+        resolve_validation_repository(
+            candidate_validation_root=(
+                candidate_validation_root
+            ),
+            repository_name=repo_path.name,
+        )
+    )
+
+    validation_root = (
+        candidate_validation_root
         / repository
     )
 
@@ -497,6 +579,8 @@ def run_reproduction(
         "repro.py",
         "--repo",
         repository_config["url"],
+        "--repository-name",
+        repository,
         "--commit",
         selected_commit,
     ]

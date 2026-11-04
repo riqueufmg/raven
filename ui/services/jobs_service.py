@@ -70,6 +70,7 @@ def get_latest_job(
     *,
     repository: str,
     job_type: str,
+    target: str | None = None,
 ) -> dict[str, Any] | None:
     for job in get_jobs():
         if (
@@ -82,9 +83,60 @@ def get_latest_job(
             )
             == job_type
         ):
+            if (
+                target is not None
+                and job.get(
+                    "target"
+                )
+                != target
+            ):
+                continue
+
             return job
 
     return None
+
+
+def failure_summary(
+    job: dict[str, Any],
+) -> str:
+    message = str(
+        job.get(
+            "message"
+        )
+        or ""
+    ).strip()
+
+    if message:
+        return message
+
+    phase = str(
+        job.get(
+            "phase"
+        )
+        or ""
+    ).strip()
+
+    if (
+        phase
+        and "failed"
+        in phase.casefold()
+        and phase.casefold()
+        != "failed"
+    ):
+        return phase
+
+    exit_code = job.get(
+        "exit_code"
+    )
+
+    if exit_code is not None:
+        return (
+            "Reproduction job exited with code "
+            f"{exit_code}."
+        )
+
+    return "The reproduction job failed."
 
 
 def read_job_log(

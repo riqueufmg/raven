@@ -198,6 +198,14 @@ def main():
 
     parser.add_argument("--repo", required=True, help="Git repository URL")
     parser.add_argument(
+        "--repository-name",
+        default="",
+        help=(
+            "Canonical repository name used for the benchmark "
+            "directory. If omitted, the name is derived from --repo."
+        ),
+    )
+    parser.add_argument(
         "--commit",
         required=True,
         help="Historical Git commit",
@@ -225,7 +233,19 @@ def main():
     maven_toolchains_dir.mkdir(parents=True, exist_ok=True)
     repositories_dir.mkdir(parents=True, exist_ok=True)
 
-    repo_name = Path(args.repo.rstrip("/")).stem
+    repo_name = (
+        args.repository_name.strip()
+        or Path(args.repo.rstrip("/")).stem
+    )
+
+    if (
+        not repo_name
+        or Path(repo_name).name != repo_name
+        or repo_name in {".", ".."}
+    ):
+        raise RuntimeError(
+            f"Invalid repository name: {repo_name!r}"
+        )
 
     repository_environment_dir = repositories_dir / repo_name
     repository_dir = repository_environment_dir / "repository"

@@ -25,6 +25,7 @@ SMELL_ORDER = [
 STATUS_ORDER = [
     "Not reproduced",
     "Running",
+    "Failed",
     "Existing",
     "Reproduced",
 ]
@@ -175,6 +176,13 @@ def load_results_summary(
         )
     )
 
+    failed = (
+        status_counts.get(
+            "Failed",
+            0,
+        )
+    )
+
     existing = (
         status_counts.get(
             "Existing",
@@ -209,6 +217,8 @@ def load_results_summary(
             running,
         "not_reproduced":
             not_reproduced,
+        "failed":
+            failed,
         "existing":
             existing,
         "smell_counts":
