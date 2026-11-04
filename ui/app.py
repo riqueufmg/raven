@@ -32,6 +32,7 @@ from cli.repository import (
 )
 from ui.services.candidates_service import (
     UICandidatesError,
+    load_candidate_target,
     load_candidate_targets,
     start_reproduction,
 )
@@ -990,6 +991,11 @@ def candidate_state_message(
             "Reproduction running"
         )
 
+    elif state == "Failed":
+        st.error(
+            "Reproduction failed"
+        )
+
     elif state == "Existing":
         st.warning(
             "Existing environment"
@@ -1001,15 +1007,479 @@ def candidate_state_message(
         )
 
 
+def render_evidence_download(
+    *,
+    label: str,
+    path: Path | None,
+    exists: bool,
+    key: str,
+) -> None:
+    if path is None:
+        st.caption(
+            f"{label}: not configured"
+        )
+        return
+
+    st.caption(
+        f"{label}: `{path}`"
+    )
+
+    if not exists:
+        st.warning(
+            f"{label} is not available."
+        )
+        return
+
+    try:
+        data = path.read_bytes()
+
+    except OSError as exc:
+        st.warning(
+            f"Could not read {label.lower()}: {exc}"
+        )
+        return
+
+    st.download_button(
+        label=f"Download {label}",
+        data=data,
+        file_name=path.name,
+        mime=(
+            "application/json"
+            if path.suffix.lower() == ".json"
+            else "text/csv"
+        ),
+        key=key,
+        use_container_width=True,
+        on_click="ignore",
+    )
+
+
+def render_candidate_evidence(
+    *,
+    repository: str,
+    candidate: dict,
+    index: int,
+) -> None:
+    smell = candidate.get(
+        "SmellAlias",
+        "-",
+    )
+
+    entity = candidate.get(
+        "Entity",
+        "-",
+    )
+
+    commit = candidate.get(
+        "CommitWithSmell",
+        "",
+    )
+
+    commit_without_smell = candidate.get(
+        "CommitWithoutSmell",
+        "",
+    )
+
+    evidence = candidate.get(
+        "Evidence",
+        {},
+    )
+
+    title = (
+        f"{smell} · {entity} · "
+        f"{commit_without_smell[:12]}"
+    )
+
+    with st.expander(
+        title,
+        expanded=False,
+    ):
+        st.write(
+            f"**Smell:** {smell}"
+        )
+
+        st.write(
+            f"**Entity:** `{entity}`"
+        )
+
+        st.write(
+            f"**Commit with smell (C):** "
+            f"`{commit}`"
+        )
+
+        st.write(
+            f"**Commit without smell (C'):** "
+            f"`{commit_without_smell}`"
+        )
+
+        artifact_name = evidence.get(
+            "smell_artifact"
+        )
+
+        if artifact_name:
+            st.caption(
+                "Smell evidence file selected from "
+                f"smells.yml: {artifact_name}"
+            )
+
+        base_key = (
+            f"evidence_{repository}_"
+            f"{commit}_"
+            f"{commit_without_smell}_"
+            f"{smell}_{index}"
+        )
+
+        load_downloads = st.toggle(
+            "Load artifact downloads",
+            value=False,
+            key=f"{base_key}_load",
+            help=(
+                "Artifact contents are loaded only when "
+                "this option is enabled, keeping the "
+                "Candidates page lightweight."
+            ),
+        )
+
+        if load_downloads:
+            before_col, after_col, ref_col = (
+                st.columns(3)
+            )
+
+            with before_col:
+                render_evidence_download(
+                    label="Before smell artifact",
+                    path=evidence.get(
+                        "before"
+                    ),
+                    exists=bool(
+                        evidence.get(
+                            "before_exists"
+                        )
+                    ),
+                    key=(
+                        f"{base_key}_before"
+                    ),
+                )
+
+            with after_col:
+                render_evidence_download(
+                    label="After smell artifact",
+                    path=evidence.get(
+                        "after"
+                    ),
+                    exists=bool(
+                        evidence.get(
+                            "after_exists"
+                        )
+                    ),
+                    key=(
+                        f"{base_key}_after"
+                    ),
+                )
+
+            with ref_col:
+                render_evidence_download(
+                    label="Refactorings C → C'",
+                    path=evidence.get(
+                        "refactorings"
+                    ),
+                    exists=bool(
+                        evidence.get(
+                            "refactorings_exists"
+                        )
+                    ),
+                    key=(
+                        f"{base_key}_refactorings"
+                    ),
+                )
+
+
+def render_candidate_target_detail(
+    *,
+    repository: str,
+    commit: str,
+) -> None:
+    if st.button(
+        "← Back to candidates",
+        key="back_to_candidate_catalog",
+    ):
+        st.session_state.pop(
+            "candidate_target_detail",
+            None,
+        )
+        st.rerun()
+
+    try:
+        target = load_candidate_target(
+            DEFAULT_CONFIG,
+            repository=repository,
+            commit=commit,
+        )
+
+    except UICandidatesError as exc:
+        st.error(
+            str(exc)
+        )
+        return
+
+    st.title(
+        "Reproduction Target"
+    )
+
+    state = target[
+        "state"
+    ]
+
+    info_col, status_col = (
+        st.columns(
+            [3, 1]
+        )
+    )
+
+    with info_col:
+        st.write(
+            f"**Repository:** {repository}"
+        )
+
+        st.write(
+            f"**Commit with smell (C):** "
+            f"`{commit}`"
+        )
+
+        st.write(
+            f"**Validated candidates:** "
+            f"{target['candidate_count']}"
+        )
+
+    with status_col:
+        st.write(
+            "**Status:**"
+        )
+
+        candidate_state_message(
+            state
+        )
+
+    if state == "Failed":
+        failed_job = (
+            target.get(
+                "reproduction_job"
+            )
+            or {}
+        )
+
+        failure_reason = (
+            target.get(
+                "failure_reason"
+            )
+            or "The reproduction job failed."
+        )
+
+        st.error(
+            f"**Failure reason:** {failure_reason}"
+        )
+
+        failure_col1, failure_col2 = (
+            st.columns(2)
+        )
+
+        with failure_col1:
+            st.write(
+                f"**Job:** "
+                f"`{failed_job.get('id') or '-'}`"
+            )
+
+        with failure_col2:
+            exit_code = failed_job.get(
+                "exit_code"
+            )
+
+            st.write(
+                f"**Exit code:** "
+                f"{exit_code if exit_code is not None else '-'}"
+            )
+
+        view_log = st.toggle(
+            "View log",
+            value=False,
+            key=(
+                "view_failed_log_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+        )
+
+        if view_log:
+            try:
+                log_text = read_job_log(
+                    failed_job,
+                    max_lines=250,
+                )
+
+            except UIJobsError as exc:
+                st.error(
+                    str(exc)
+                )
+
+            else:
+                if log_text:
+                    st.code(
+                        log_text,
+                        language="text",
+                    )
+
+                else:
+                    st.info(
+                        "No log output is available "
+                        "for this reproduction attempt."
+                    )
+
+    st.divider()
+
+    st.subheader(
+        "Candidate instances"
+    )
+
+    ordered_candidates = sorted(
+        target[
+            "candidates"
+        ],
+        key=lambda candidate: (
+            SMELL_ORDER.index(
+                candidate[
+                    "SmellAlias"
+                ]
+            )
+            if candidate[
+                "SmellAlias"
+            ] in SMELL_ORDER
+            else len(
+                SMELL_ORDER
+            ),
+            candidate[
+                "SmellAlias"
+            ],
+            candidate[
+                "Entity"
+            ],
+            candidate[
+                "CommitWithoutSmell"
+            ],
+        ),
+    )
+
+    for index, candidate in enumerate(
+        ordered_candidates
+    ):
+        render_candidate_evidence(
+            repository=repository,
+            candidate=candidate,
+            index=index,
+        )
+
+    st.divider()
+
+    if state == "Not reproduced":
+        if st.button(
+            "Reproduce",
+            key=(
+                "reproduce_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+            type="primary",
+        ):
+            try:
+                job = (
+                    start_reproduction(
+                        config_path=(
+                            DEFAULT_CONFIG
+                        ),
+                        repository=(
+                            repository
+                        ),
+                        commit=commit,
+                    )
+                )
+
+            except UICandidatesError as exc:
+                st.error(
+                    str(exc)
+                )
+
+            else:
+                st.success(
+                    "Reproduction job started."
+                )
+
+                st.write(
+                    f"**Job:** "
+                    f"`{job['id']}`"
+                )
+
+                st.write(
+                    f"**Log:** "
+                    f"`{job['log']}`"
+                )
+
+    elif state == "Running":
+        st.info(
+            "A reproduction job is currently "
+            "active for this commit."
+        )
+
+    elif state == "Reproduced":
+        st.success(
+            "This historical environment has "
+            "already passed the final offline "
+            "validation."
+        )
+
+    elif state == "Failed":
+        st.error(
+            "This reproduction attempt failed. "
+            "Review the failure information and log above."
+        )
+
+    elif state == "Existing":
+        st.warning(
+            "A non-empty reproduction environment "
+            "already exists for this commit, but "
+            "it is not recognized as successfully "
+            "reproduced."
+        )
+
+
 def render_candidates_page() -> None:
+    selected_detail = st.session_state.get(
+        "candidate_target_detail"
+    )
+
+    if isinstance(
+        selected_detail,
+        dict,
+    ):
+        repository = selected_detail.get(
+            "repository"
+        )
+        commit = selected_detail.get(
+            "commit"
+        )
+
+        if repository and commit:
+            render_candidate_target_detail(
+                repository=repository,
+                commit=commit,
+            )
+            return
+
     st.title(
         "Validated Candidates"
     )
 
     st.write(
-        "Inspect validated smell-removal "
-        "candidates across repositories and "
-        "start historical environment reproduction."
+        "Browse validated smell-removal candidates "
+        "and open one reproduction target at a time."
     )
 
     try:
@@ -1235,243 +1705,63 @@ def render_candidates_page() -> None:
             row
         )
 
-    st.dataframe(
+    st.caption(
+        "Select a row to open its reproduction target."
+    )
+
+    selection = st.dataframe(
         pd.DataFrame(
             table_rows
         ),
         use_container_width=True,
         hide_index=True,
+        on_select="rerun",
+        selection_mode="single-row",
+        key="candidate_target_table",
     )
 
-    st.divider()
-
-    st.subheader(
-        "Reproduction targets"
+    selected_rows = (
+        selection.selection.rows
+        if selection
+        and hasattr(
+            selection,
+            "selection",
+        )
+        else []
     )
 
-    for target in filtered_targets:
-        repository = target[
-            "repository"
-        ]
-
-        commit = target[
-            "commit"
-        ]
-
-        short_commit = target[
-            "short_commit"
-        ]
-
-        state = target[
-            "state"
-        ]
-
-        ordered_target_smells = (
-            ordered_values(
-                set(
-                    target[
-                        "smells"
-                    ]
-                ),
-                SMELL_ORDER,
-            )
+    if selected_rows:
+        selected_index = (
+            selected_rows[0]
         )
 
-        title_parts = []
-
-        if not selected_repository:
-            title_parts.append(
-                repository
-            )
-
-        title_parts.extend(
-            [
-                short_commit,
-                ", ".join(
-                    ordered_target_smells
-                ),
-            ]
-        )
-
-        title = " · ".join(
-            title_parts
-        )
-
-        with st.expander(
-            title,
-            expanded=False,
+        if (
+            0 <= selected_index
+            < len(filtered_targets)
         ):
-            info_col, status_col = (
-                st.columns(
-                    [3, 1]
-                )
-            )
+            target = filtered_targets[
+                selected_index
+            ]
 
-            with info_col:
-                st.write(
-                    f"**Repository:** "
-                    f"{repository}"
-                )
+            st.session_state[
+                "candidate_target_detail"
+            ] = {
+                "repository":
+                    target[
+                        "repository"
+                    ],
+                "commit":
+                    target[
+                        "commit"
+                    ],
+            }
 
-                st.write(
-                    f"**Commit:** "
-                    f"`{commit}`"
-                )
+            st.rerun()
 
-                st.write(
-                    f"**Validated candidates:** "
-                    f"{target['candidate_count']}"
-                )
-
-            with status_col:
-                st.write(
-                    "**Status:**"
-                )
-
-                candidate_state_message(
-                    state
-                )
-
-            st.write(
-                "**Candidate instances**"
-            )
-
-            candidate_rows = []
-
-            for candidate in target[
-                "candidates"
-            ]:
-                candidate_rows.append(
-                    {
-                        "Smell":
-                            candidate[
-                                "SmellAlias"
-                            ],
-                        "Entity":
-                            candidate[
-                                "Entity"
-                            ],
-                    }
-                )
-
-            candidate_dataframe = (
-                pd.DataFrame(
-                    candidate_rows
-                )
-            )
-
-            if not candidate_dataframe.empty:
-                smell_rank = {
-                    smell: index
-                    for index, smell
-                    in enumerate(
-                        SMELL_ORDER
-                    )
-                }
-
-                candidate_dataframe[
-                    "_smell_order"
-                ] = (
-                    candidate_dataframe[
-                        "Smell"
-                    ]
-                    .map(
-                        smell_rank
-                    )
-                    .fillna(
-                        len(
-                            SMELL_ORDER
-                        )
-                    )
-                )
-
-                candidate_dataframe = (
-                    candidate_dataframe
-                    .sort_values(
-                        [
-                            "_smell_order",
-                            "Smell",
-                            "Entity",
-                        ]
-                    )
-                    .drop(
-                        columns=[
-                            "_smell_order"
-                        ]
-                    )
-                )
-
-            st.dataframe(
-                candidate_dataframe,
-                use_container_width=True,
-                hide_index=True,
-            )
-
-            if state == "Not reproduced":
-                if st.button(
-                    "Reproduce",
-                    key=(
-                        "reproduce_"
-                        f"{repository}_"
-                        f"{commit}"
-                    ),
-                    type="primary",
-                ):
-                    try:
-                        job = (
-                            start_reproduction(
-                                config_path=(
-                                    DEFAULT_CONFIG
-                                ),
-                                repository=(
-                                    repository
-                                ),
-                                commit=commit,
-                            )
-                        )
-
-                    except UICandidatesError as exc:
-                        st.error(
-                            str(exc)
-                        )
-
-                    else:
-                        st.success(
-                            "Reproduction job started."
-                        )
-
-                        st.write(
-                            f"**Job:** "
-                            f"`{job['id']}`"
-                        )
-
-                        st.write(
-                            f"**Log:** "
-                            f"`{job['log']}`"
-                        )
-
-                        st.rerun()
-
-            elif state == "Running":
-                st.info(
-                    "A reproduction job is "
-                    "currently active for this commit."
-                )
-
-            elif state == "Reproduced":
-                st.success(
-                    "This historical environment "
-                    "has already passed the final "
-                    "offline validation."
-                )
-
-            elif state == "Existing":
-                st.warning(
-                    "A non-empty reproduction "
-                    "environment already exists for "
-                    "this commit, but it is not "
-                    "recognized as successfully reproduced."
-                )
+    st.caption(
+        f"Showing {len(filtered_targets)} of "
+        f"{len(targets)} reproduction targets."
+    )
 
 
 def render_results_page() -> None:
@@ -1558,8 +1848,9 @@ def render_results_page() -> None:
         metric_col2,
         metric_col3,
         metric_col4,
+        metric_col5,
     ) = st.columns(
-        4
+        5
     )
 
     with metric_col1:
@@ -1588,6 +1879,14 @@ def render_results_page() -> None:
 
     with metric_col4:
         st.metric(
+            "Failed",
+            results[
+                "failed"
+            ],
+        )
+
+    with metric_col5:
+        st.metric(
             "Not reproduced",
             results[
                 "not_reproduced"
@@ -1604,6 +1903,12 @@ def render_results_page() -> None:
         st.info(
             f"{results['running']} reproduction "
             "target(s) currently running."
+        )
+
+    if results["failed"]:
+        st.error(
+            f"{results['failed']} reproduction "
+            "target(s) have a failed attempt."
         )
 
     if results["existing"]:
