@@ -1,0 +1,11 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+byte-buddy,GC,God Component,net.bytebuddy.test.precompiled,package,5a4b500ef14e82dda338d36dcb4bdaaee41373ab,6a9ab3e2450f865f6ac93a6b09bb41bc3e3c8ec9,true,true,true,false,true,40,true
+byte-buddy,IM,Insufficient Modularization,net.bytebuddy.build.gradle.android.ByteBuddyAndroidTaskExtension,class,ae380bb57643eae40a2ffa7553e6093e256050a7,c3c2031f3140f51f05612bc36014d05d9aa8e8a4,true,true,true,false,true,1,true
+byte-buddy,IM,Insufficient Modularization,net.bytebuddy.utility.visitor.StackAwareMethodVisitor,class,1564e89f9eae4bff81866fd1657f31b84c1e25b1,e53395f8000e3f3eb849b67273cf1c4b03903e6e,true,true,true,false,true,0,false
+byte-buddy,IM,Insufficient Modularization,net.bytebuddy.utility.visitor.StackAwareMethodVisitor,class,96269d36038428ca1d3ee573d9642b041ed45f68,7c74f706486418a187ef9c6c4b3986f8173ecc26,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.asm,package,4a9d3c2b227f61f1e650deb47177075e27a5da82,0757d157551572bb4043976b4d8ac348ca08f732,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.build.gradle.android,package,7ee04646b62d70faa43a36cbe529ed05e3c34ec1,542ee025305abcc881716a32bdfff235a05991e2,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.build.gradle.android,package,f035db89b03f68d32d0c5cbefc8705f5e40f705f,badbf4c215dfa0e1c6aa3af7d33cacbbe2de53b1,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.description,package,c64e1d005f992123e38ed100e846db345753f5d0,57db712020058f8c8a150a390fecf7d6934a7c7f,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.dynamic.scaffold.inline,package,03e92da92355a81365af2e986921b8ad68067cba,2aec9678b6623ff4d61cc776a0a069ac25d7b6f9,true,true,true,false,true,0,false
+byte-buddy,UD,Unstable Dependency,net.bytebuddy.dynamic.scaffold.inline,package,f8ba87f3f7e8cd987ffbd00b953100b3244decb5,770f330174b9850e68971e64a9ce8596d620d2fd,true,true,true,false,true,0,false

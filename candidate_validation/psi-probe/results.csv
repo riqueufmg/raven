@@ -1,0 +1,6 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+psi-probe,GC,God Component,psiprobe,package,77e0068664ccb9bfd5b08d6129222bb6a3ec21b5,0724ebbb64ea51494dfe0dcaba5c3f3e9fa45e49,true,true,true,false,true,0,false
+psi-probe,GC,God Component,psiprobe,package,b85ca2eb7cc90c371fb872caaf74244a19aebfc1,4277d971de8b8c68373c8763e3a0c53de8fa3876,true,true,true,false,true,3,true
+psi-probe,GC,God Component,psiprobe,package,c281d4a19b5fbdec571a13a0957e5b05d8529f98,5fbb027a957ca8992d655ccb48c527378260ec32,true,true,true,false,true,0,false
+psi-probe,IM,Insufficient Modularization,psiprobe.ProbeSecurityConfig,class,16d30c857020adcc2f0bac31975aaff7e77a5632,f4b102bb55b96a983287cea0f951aa810c6ab6b5,true,true,true,false,true,2,true
+psi-probe,IM,Insufficient Modularization,psiprobe.ProbeSecurityConfig,class,8f4c0a56c0025ccd3235f46813ab3518fc768a66,69170535c429596d43c90ca619eafbe812701f04,true,true,true,false,true,3,true

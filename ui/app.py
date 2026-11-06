@@ -34,6 +34,7 @@ from ui.services.candidates_service import (
     UICandidatesError,
     load_candidate_target,
     load_candidate_targets,
+    reset_reproduction_attempt,
     start_reproduction,
 )
 from ui.services.config_service import (
@@ -1441,6 +1442,56 @@ def render_candidate_target_detail(
             "Review the failure information and log above."
         )
 
+        st.divider()
+
+        st.subheader(
+            "Reset reproduction attempt"
+        )
+
+        st.warning(
+            "Deleting this attempt removes the "
+            "commit-specific reproduction environment, "
+            "its reproduction job metadata, and its job logs. "
+            "Candidate validation and mining artifacts are preserved."
+        )
+
+        confirm_delete = st.checkbox(
+            "I understand that this reproduction attempt "
+            "will be permanently deleted.",
+            key=(
+                "confirm_delete_failed_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+        )
+
+        if st.button(
+            "Delete attempt",
+            disabled=not confirm_delete,
+            key=(
+                "delete_failed_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+        ):
+            try:
+                reset_reproduction_attempt(
+                    config_path=DEFAULT_CONFIG,
+                    repository=repository,
+                    commit=commit,
+                )
+
+            except UICandidatesError as exc:
+                st.error(
+                    str(exc)
+                )
+
+            else:
+                st.toast(
+                    "Reproduction attempt deleted."
+                )
+                st.rerun()
+
     elif state == "Existing":
         st.warning(
             "A non-empty reproduction environment "
@@ -1448,6 +1499,57 @@ def render_candidate_target_detail(
             "it is not recognized as successfully "
             "reproduced."
         )
+
+        st.divider()
+
+        st.subheader(
+            "Reset reproduction attempt"
+        )
+
+        st.warning(
+            "Deleting this attempt removes the "
+            "commit-specific reproduction environment "
+            "and any reproduction job metadata and logs "
+            "associated with this commit. "
+            "Candidate validation and mining artifacts are preserved."
+        )
+
+        confirm_delete = st.checkbox(
+            "I understand that this reproduction attempt "
+            "will be permanently deleted.",
+            key=(
+                "confirm_delete_existing_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+        )
+
+        if st.button(
+            "Delete attempt",
+            disabled=not confirm_delete,
+            key=(
+                "delete_existing_"
+                f"{repository}_"
+                f"{commit}"
+            ),
+        ):
+            try:
+                reset_reproduction_attempt(
+                    config_path=DEFAULT_CONFIG,
+                    repository=repository,
+                    commit=commit,
+                )
+
+            except UICandidatesError as exc:
+                st.error(
+                    str(exc)
+                )
+
+            else:
+                st.toast(
+                    "Reproduction attempt deleted."
+                )
+                st.rerun()
 
 
 def render_candidates_page() -> None:

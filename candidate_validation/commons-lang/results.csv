@@ -1,0 +1,5 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+commons-lang,UD,Unstable Dependency,org.apache.commons.lang3.builder,package,b1a659af124023b87729c967a4ea577331035872,166ceb75286894fab753e29fdce3af4d33d1439a,true,true,true,false,true,0,false
+commons-lang,UD,Unstable Dependency,org.apache.commons.lang3.builder,package,bc10ad9ded5bd50dabf54511dabc4badce31b015,c290aebffa83b382a24d74117755904017f82b7c,true,true,true,false,true,0,false
+commons-lang,UD,Unstable Dependency,org.apache.commons.lang3.concurrent,package,053e26316631cba49a47e697a7b66c4296824507,f75f5b9373c0c9b8c3257642468e10a792afb6a4,true,true,true,false,true,0,false
+commons-lang,UD,Unstable Dependency,org.apache.commons.lang3.math,package,1d9093c5062806db6c13ec635648c71aeac6a09f,611887f501ed12905504af3c7cb7138c15888c79,true,true,true,false,true,1,true

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import uuid
 from pathlib import Path
@@ -1144,6 +1145,162 @@ def load_candidate_target(
         )
 
     return targets[0]
+
+
+def reset_reproduction_attempt(
+    *,
+    config_path: str | Path,
+    repository: str,
+    commit: str,
+) -> dict[str, Any]:
+    try:
+        (
+            _resolved_config_path,
+            _config,
+            _validation_root,
+            _mining_results_root,
+            benchmark_root,
+            repositories,
+        ) = _candidate_context(
+            config_path
+        )
+
+    except Exception as exc:
+        raise UICandidatesError(
+            str(exc)
+        ) from exc
+
+    if repository not in repositories:
+        raise UICandidatesError(
+            "Unknown candidate repository: "
+            f"{repository}"
+        )
+
+    jobs = list_jobs()
+
+    matching_jobs = [
+        job
+        for job in jobs
+        if (
+            job.get("type")
+            == "reproduction"
+            and job.get("repository")
+            == repository
+            and (
+                job.get("target")
+                == commit
+            )
+        )
+    ]
+
+    active_jobs = [
+        job
+        for job in matching_jobs
+        if job.get("status")
+        in {
+            "pending",
+            "running",
+        }
+    ]
+
+    if active_jobs:
+        active = active_jobs[0]
+
+        raise UICandidatesError(
+            "The reproduction attempt cannot be deleted "
+            "while it is running. "
+            f"Active job: {active.get('id') or '-'}"
+        )
+
+    environment = (
+        benchmark_root
+        / "repositories"
+        / repository
+        / "commits"
+        / commit[:12]
+    )
+
+    removed_logs = 0
+    removed_jobs = 0
+
+    for job in matching_jobs:
+        log_value = str(
+            job.get("log")
+            or ""
+        ).strip()
+
+        if log_value:
+            log_path = Path(
+                log_value
+            )
+
+            if not log_path.is_absolute():
+                cwd = (
+                    job.get("cwd")
+                    or PROJECT_ROOT
+                )
+
+                log_path = (
+                    Path(cwd)
+                    / log_path
+                )
+
+            if log_path.is_file():
+                log_path.unlink()
+                removed_logs += 1
+
+        metadata_value = str(
+            job.get(
+                "_metadata_path"
+            )
+            or ""
+        ).strip()
+
+        if metadata_value:
+            metadata_path = Path(
+                metadata_value
+            )
+
+            if not metadata_path.is_absolute():
+                metadata_path = (
+                    PROJECT_ROOT
+                    / metadata_path
+                )
+
+            if metadata_path.is_file():
+                metadata_path.unlink()
+                removed_jobs += 1
+
+    environment_removed = False
+
+    if environment.exists():
+        if not environment.is_dir():
+            raise UICandidatesError(
+                "The reproduction environment path exists "
+                "but is not a directory: "
+                f"{environment}"
+            )
+
+        shutil.rmtree(
+            environment
+        )
+
+        environment_removed = True
+
+    return {
+        "repository":
+            repository,
+        "commit":
+            commit,
+        "environment":
+            environment,
+        "environment_removed":
+            environment_removed,
+        "jobs_removed":
+            removed_jobs,
+        "logs_removed":
+            removed_logs,
+    }
 
 
 def start_reproduction(

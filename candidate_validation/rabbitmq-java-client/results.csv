@@ -1,0 +1,3 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+rabbitmq-java-client,IM,Insufficient Modularization,com.rabbitmq.client.impl.MicrometerMetricsCollector,class,590aa06f6be2da6cbf21ee5ae4fb09e8a132e4b0,0bd5372b78a85e54545036c1fa25b29e5da0ce2d,true,true,true,false,true,1,true
+rabbitmq-java-client,UD,Unstable Dependency,com.rabbitmq.client.test.server,package,728c8a7736d56252edaae95ad7a8ea4b03dfbcde,52201b03ef6486748217260dd524358a73f37015,true,true,true,false,true,20,true
