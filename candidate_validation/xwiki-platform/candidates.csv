@@ -1,0 +1,2 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,FirstParentOfCommitWithoutSmell,IsDirectChild,EntityExistsAfter,Classification,Package,Class,FileBefore
+xwiki-platform,GC,God Component,org.xwiki.notifications.filters.internal,package,47ccaf434c8738728a1576ff53d40d0f086db07e,9fe30c9f4234aab8c1193fd90a47c7540c65e489,47ccaf434c8738728a1576ff53d40d0f086db07e,true,true,smell_removed_candidate,org.xwiki.notifications.filters.internal,,

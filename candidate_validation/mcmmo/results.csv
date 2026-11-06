@@ -1,0 +1,25 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.database.SQLDatabaseManagerTest,class,56ca96cd501b240bbdf2b50da59b48bfffc34100,0dcf35b64ace92c17f9fe3e1e222dcaca30ca9cf,true,true,true,false,true,7,true
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.util.commands.CommandRegistrationManager,class,064e042d8debb6b56d0593590f67da970aa025c9,4f14b16a2294516bd35431261b5758285519fecf,true,true,true,false,true,5,true
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.util.Misc,class,590b00aeca1d60bcb39036c70febb49afcb4b1e8,4277384c22ce4fe4e68d67f24b0a3ad86bde87dd,true,true,true,false,true,9,true
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.util.ModManager,class,9f7dbc23f6fe2f578f25e2d7798edca97863b07d,4ba85aa4443ce83825b8e6709d9fa544a0cb5e8e,true,true,true,false,true,0,false
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.util.PotionUtil,class,db985bcc529298e5259c05a5ce5413cd04111c3c,c94f10568d23c6a3dd39ade4eb8c171c8d198a9f,true,true,true,false,true,10,true
+mcmmo,IM,Insufficient Modularization,com.gmail.nossr50.util.text.StringUtils,class,03c9dfda02fadb954341bf6fa63265b59106fd26,ce18f3df97b7bc406b4ff04638dad05f00df6df1,true,true,true,false,true,12,true
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.chat.author,package,56ca96cd501b240bbdf2b50da59b48bfffc34100,0dcf35b64ace92c17f9fe3e1e222dcaca30ca9cf,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.commands,package,dedfd2fdde7604ccba468d6380c74582284fb9ca,980b6cbe9953b2c47da4df976a817d0ff8ac21dd,true,true,true,false,true,16,true
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.database,package,b5a50da09bf3fbcd355aefff8f96b1b1b32efb2a,a047bca94c844c5be8a46fad2a9e77068f93bf3c,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.skills.alchemy,package,5628df988facb57247d8facb5c395c38ade09d28,78558107b33a1575b18d795ba8cd409d9197c91e,true,true,true,false,true,24,true
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.skills.alchemy,package,9f7dbc23f6fe2f578f25e2d7798edca97863b07d,4ba85aa4443ce83825b8e6709d9fa544a0cb5e8e,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.skills.subskills,package,56ca96cd501b240bbdf2b50da59b48bfffc34100,0dcf35b64ace92c17f9fe3e1e222dcaca30ca9cf,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.treasure,package,0ca12d2c35c1bc4a62849e55c8dab8c6b30bd0d8,91d01c7e9e4c99692ec3c11270756919df452f83,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.treasure,package,a907bfd6241dbd30ade5e9dec5de58c8ea19e7a6,b15365e9788e385af13e3f36d7c3976d90cb9100,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.datatypes.treasure,package,df4cdce38ca8641eb3add62c2ab973f9ad0e253a,0f931539b3c1d5b83c1ad85e45801b361818e438,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.listeners,package,ffc6061f8b5cbd15c5a5c440bd0d03eb02b02d05,4d98d25215e7d75ebd477076be40b1d06537a220,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.metadata,package,17052861d168ccb90778dcd1e22cac7f7405e77d,3ba6b931355a9b22899cdc6d165bd30b6121c9da,true,true,true,false,true,5,true
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.runnables.skills,package,827b89425777f35b7ed70b22f0c0f8647e31cabb,19bf96ab33708758c75f8ffb3f87f80677576415,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.commands,package,a3f6e55adaf5dae01d21ad19a931c7a761314922,c9ac1407f2e5898ff47370a5a2e66aaf35c2287c,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.experience,package,c6292f4b0c1fef620ce55a60082a3d69080fd459,e53f74c2751dbcb5d0ecd5bf958088e35e18649d,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.platform,package,15315ed1ed6b77d4a69885897e2d53eb0a7df782,e156cff7e2e51a4f3587c921bc9758ac42653431,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.platform,package,947b3efe7459695720cb205f803deaa725c464a5,237890cf509a1e4fec31c4d21f9652a78e20f27f,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.platform,package,c25b48e7812f718cdaba7da7801c9a442efb3e29,0bf608a425587c65384f6532f3df94c1c84b84d6,true,true,true,false,true,0,false
+mcmmo,UD,Unstable Dependency,com.gmail.nossr50.util.platform,package,db985bcc529298e5259c05a5ce5413cd04111c3c,c94f10568d23c6a3dd39ade4eb8c171c8d198a9f,true,true,true,false,true,3,true

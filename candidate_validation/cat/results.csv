@@ -1,0 +1,18 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+cat,GC,God Component,com.dianping.cat,package,be00efde42535573a98c1af9b5843d4210c55f0e,6d735e7471b8208a2ff83635094d34b22223b2d6,true,true,true,false,true,12,true
+cat,IM,Insufficient Modularization,com.dianping.cat.message.internal.DefaultMessageProducer,class,8ff9b0cb1bcace4abffdef53b5e84a0cb5cf6318,d9ddd76084070dfbf5e40b2e284b18552588b424,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.alarm.spi.config,package,3871924e21906f2e37c3321c341599e96ae01282,84a737c59b99ab8a0970eff168598fbb166a97bd,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.analysis,package,8ff9b0cb1bcace4abffdef53b5e84a0cb5cf6318,d9ddd76084070dfbf5e40b2e284b18552588b424,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.cross,package,12700678004ac97555a40d1127e31c7cf9a4370d,f726c48db0c3c2734cd5f5aee99c239766dc3a3e,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.event,package,d9ddd76084070dfbf5e40b2e284b18552588b424,c744c72fa24272f3589e0a38328ed3c4e773d9ae,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.heartbeat,package,8dd4ca092993c8828a8210a74a2f75f3af87e8d5,1a1d8fd32a7f747659ce9f82070aac57c27fc312,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.matrix,package,1cf59f6993a6f22b5721c49cc06cc7acbc576109,8dd4ca092993c8828a8210a74a2f75f3af87e8d5,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.problem,package,12700678004ac97555a40d1127e31c7cf9a4370d,f726c48db0c3c2734cd5f5aee99c239766dc3a3e,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.consumer.top,package,d9ddd76084070dfbf5e40b2e284b18552588b424,c744c72fa24272f3589e0a38328ed3c4e773d9ae,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.message.pipeline,package,5fe529b88c01bd3c9456b3edbc22d5eb76000e29,732b7ee1b4253cd090cc86320305fea785d44d0b,true,true,true,false,true,1,true
+cat,UD,Unstable Dependency,com.dianping.cat.message.pipeline,package,d875f067430041b2370b9e58511176a77ea86ce7,366e497497702d5fdfad4faef32f70cc49802d02,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.message.spi.codec,package,d9ddd76084070dfbf5e40b2e284b18552588b424,c744c72fa24272f3589e0a38328ed3c4e773d9ae,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.message.spi.internal,package,8ff9b0cb1bcace4abffdef53b5e84a0cb5cf6318,d9ddd76084070dfbf5e40b2e284b18552588b424,true,true,true,false,true,5,true
+cat,UD,Unstable Dependency,com.dianping.cat.message.storage,package,8ff9b0cb1bcace4abffdef53b5e84a0cb5cf6318,d9ddd76084070dfbf5e40b2e284b18552588b424,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.message.tree,package,7b8b260dbf2853ac852e2182ac619d15a61858d6,98b5af8c90e80dea023b2f3f0f19214ae04bc7a4,true,true,true,false,true,0,false
+cat,UD,Unstable Dependency,com.dianping.cat.status.model.entity,package,24cd05ffba4be663ee19445c5f3f1956b9c5b059,15016a47c7dab92d1a38af0ead866b29239b0660,true,true,true,false,true,0,false

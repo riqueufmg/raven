@@ -1,0 +1,26 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.hbase.converter.HBaseColumnConverter,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,92,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.hbase.HBaseTableSchema,class,af7829f6654463b28af0881147e71733b9b02588,9d011191e41e22da8f3382d09573f65d1f70e7dc,true,true,true,false,true,1,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.hbase14.sink.HBaseOutputFormat,class,13b1b4d33de143d4aea22ce90a695d696afe2eec,899d0a761e5834a457495d5e7f141d1c61fef51c,true,true,true,false,true,10,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.hive.entity.TableInfo,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,1,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.http.common.HttpRestConfig,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,2,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.http.common.HttpWriterConfig,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,3,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.http.common.MetaParam,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,2,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.jdbc.source.JdbcInputFormat,class,97bbb84c84fc629cd87d7112d639647cf39efa77,6230ea2bef22d0d08821ede52bb0d40caac2aa59,true,true,true,false,true,12,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.connector.oraclelogminer.entity.RecordLog,class,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,3,true
+chunjun,IM,Insufficient Modularization,com.dtstack.chunjun.element.column.BigDecimalColumn,class,082d3074fa3ac9fa0a02347f44f1bc4500c56a21,39b207f42087dbf223c9f23d885a47ae0b160dfa,true,true,true,false,true,9,true
+chunjun,IM,Insufficient Modularization,com.dtstack.flinkx.connector.dorisbatch.options.DorisOptions,class,3c59ec39b4957029b20416a46564dd06038a0dfd,55012548a630e10dc35b0f3f2cd1e5b6f562965a,true,true,true,false,true,2,true
+chunjun,IM,Insufficient Modularization,com.dtstack.flinkx.connector.dorisbatch.options.DorisOptions,class,92136024ff08804d59833c0a7a55b208518bbecb,4f99ba18ac2ff3085a4202e69571c365b8fde399,true,true,true,false,true,2,true
+chunjun,IM,Insufficient Modularization,com.dtstack.flinkx.connector.influxdb.conf.InfluxdbConfig,class,0109b4dfb54c6f5d23ba7dbb239bd4ef2bf71b24,ae928c18e1c91d27fe0c4dfebbe36a6fdd896c2a,true,true,true,false,true,26,true
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.doris.source,package,dde645268f4dc6aa3267e9fa4f461035c1b31103,0052d8d503be6254e1a5c87ed85ce35882b9d0b9,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.ftp.handler,package,df98c321e64142ae373c73f7d011200a13ec93aa,9d06b7d42f99abb7263d697277782a82b0fb3368,true,true,true,false,true,24,true
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.hbase.util,package,7d8f26543e9da97cbe87f6508a6f7829c1d39aa1,9fae82e624696f95b432db5fda1bd559b2cb770e,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.hbase14.converter,package,13b1b4d33de143d4aea22ce90a695d696afe2eec,899d0a761e5834a457495d5e7f141d1c61fef51c,true,true,true,false,true,48,true
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.hbase14.util,package,13b1b4d33de143d4aea22ce90a695d696afe2eec,899d0a761e5834a457495d5e7f141d1c61fef51c,true,true,true,false,true,1,true
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.connector.iceberg.config,package,a1f120741d7cbf73e3e655716be145a4ff7f67e8,6b79e62cabe70485fa784f71ce5ce58bf601320d,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.dirty.manager,package,ecd926a625de931c3b32cee79e01c3b3e8c82f5f,5a516ed97d9bd49da829cda5718d189e529f0e1a,true,true,true,false,true,3,true
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.element.column,package,155466edda44a582f69b1b82370a26b04c7ac9c3,8bdbd44ea57d09b2017c44bdde1442b9215b7574,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.chunjun.typeutil,package,6e136e554170f44045ead442511ca99b739cc898,78600f28b5d1e6796bd9a39ba14c10ea3bf5c2f0,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.flinkx.cdc.monitor.fetch,package,1cf0860b08ba9d2014fb6ea75a4de991425a98be,0c1b1d491921349704c64f7453b0fdd101b361d6,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.flinkx.cdc.monitor.store,package,1cf0860b08ba9d2014fb6ea75a4de991425a98be,0c1b1d491921349704c64f7453b0fdd101b361d6,true,true,true,false,true,0,false
+chunjun,UD,Unstable Dependency,com.dtstack.flinkx.connector.kafka.serialization,package,81454cd1bde9629ba45b26f89c1f7b84c56880a2,59578f13c31b471def0715e8ccc13a1a627f557c,true,true,true,false,true,4,true

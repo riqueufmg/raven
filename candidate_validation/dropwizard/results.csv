@@ -1,0 +1,17 @@
+Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
+dropwizard,GC,God Component,io.dropwizard.jersey.optional,package,21227338852277b5e73d0de53d7fa2464a0ac74e,38277c4339ed2731a58f49df5dbb6bc228882eb3,true,true,true,false,true,5,true
+dropwizard,GC,God Component,io.dropwizard.jersey.optional,package,4dd3523eab714a8aa7fe626daf8536d33ce48fce,565cec2fe409e7fd265fba26a5dafff2e99538f9,true,true,true,false,true,5,true
+dropwizard,GC,God Component,io.dropwizard.jetty,package,54b7ec737b66fb855f8bc320e2634970645eeb27,199b5e4112bd718ded8c186e9345a695ff255b48,true,true,true,false,true,29,true
+dropwizard,GC,God Component,io.dropwizard.logging,package,9e256a604151866ccfb5c7f69ff15649c3bffefb,002f8dd0c8d8b66af07fa13f3b714529e68dae97,true,true,true,false,true,55,true
+dropwizard,GC,God Component,io.dropwizard.util,package,c60bbbb74f32ec039eb1c821b09544226afc2f62,ea293d32cebb3f383b2a4ce658f5d50fc2755c7e,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,com.example.helloworld,package,e94f961b1c3f7dda4731ae39f4a08d2b222e362e,331a1642ae98ffed06ba32e9c64bcc303ed21c06,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard,package,9e256a604151866ccfb5c7f69ff15649c3bffefb,002f8dd0c8d8b66af07fa13f3b714529e68dae97,true,true,true,false,true,123,true
+dropwizard,UD,Unstable Dependency,io.dropwizard.core.cli,package,e995fd21d240adccb01a76de93ef9572224dd672,5fbcb6dc5b0702aaa0d533a8752fb0415ef57a0d,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.jersey.params,package,7cbcb9143b99fa8fa926ea535488c269e2f47016,f407f570ff2aa6f8356a78e753be03cf3dcf8fb5,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.jersey.params,package,bd30ef6a6794ce22a8e9f612c6e02e00787ea2d2,c3c1d29e00b6c299d28cb860a684e1b2423dafce,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.jersey.params,package,c96935afebd3f1637bd7c0779ab85ded84516a05,2d1a92dc7204e149bc1ee904417d9507c62b8dcf,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.jersey.params,package,e995fd21d240adccb01a76de93ef9572224dd672,5fbcb6dc5b0702aaa0d533a8752fb0415ef57a0d,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.logging.json,package,6806aec6e971f816abee1cf32dc08ef463cb68f3,92d49b190d887022a03e9b2a0819959cb9542aeb,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.logging.socket,package,24fb5be44e79c57d22d307e397fc6aa6972cc024,7644703da942d29a4f9a2f2d5e865eabd9d45e6a,true,true,true,false,true,0,false
+dropwizard,UD,Unstable Dependency,io.dropwizard.validation,package,9e256a604151866ccfb5c7f69ff15649c3bffefb,002f8dd0c8d8b66af07fa13f3b714529e68dae97,true,true,true,false,true,2,true
+dropwizard,UD,Unstable Dependency,io.dropwizard.views,package,9e256a604151866ccfb5c7f69ff15649c3bffefb,002f8dd0c8d8b66af07fa13f3b714529e68dae97,true,true,true,false,true,10,true
