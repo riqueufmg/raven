@@ -59,3 +59,21 @@ commits.previous.csv
 Thumbs.db
 .vscode/
 .idea/
+
+# Experimental results
+candidate_validation/
+benchmark/results/
+candidates.csv
+commits.csv
+commits_all.csv
+smell_candidates.csv
+
+# Local configurations
+config/opentripplanner.yml
+tools/.config
+
+# Temporary backups
+*.before_*
+tools/DesigniteLog*.txt
+
+mining/repositories.csv

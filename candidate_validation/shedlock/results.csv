@@ -1,3 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
-shedlock,GC,God Component,net.javacrumbs.shedlock.provider.jdbctemplate,package,ab88c7c4ad8d5e913c34378f780c2d2b1b29579e,928756511ad9190c836ef9fac64237e78545dcb5,true,true,true,false,true,61,true
-shedlock,IM,Insufficient Modularization,net.javacrumbs.shedlock.provider.jooq.Shedlock,class,1c0dbab255278d6819461002edf52455561e88be,b491cae4526f4b1663d15df78a4c9f1d05bcae5a,true,true,true,false,true,0,false

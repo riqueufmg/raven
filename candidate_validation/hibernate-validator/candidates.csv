@@ -1,3 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,FirstParentOfCommitWithoutSmell,IsDirectChild,EntityExistsAfter,Classification,Package,Class,FileBefore
-hibernate-validator,GC,God Component,org.hibernate.validator.test.constraints.annotations.hv,package,0571695e46dff1cb5e915449105c6470e711c5a9,43944bb94ad479d9208f23d2ca9853542ed8d7ed,0571695e46dff1cb5e915449105c6470e711c5a9,true,true,smell_removed_candidate,org.hibernate.validator.test.constraints.annotations.hv,,
-hibernate-validator,UD,Unstable Dependency,org.hibernate.validator.cdi,package,b09248adc38ab0769c9ff0e8efa1d33715069ac9,57aa9f90a8361b6a23cb90f2eaaa081aff119a8f,b09248adc38ab0769c9ff0e8efa1d33715069ac9,true,true,smell_removed_candidate,org.hibernate.validator.cdi,,

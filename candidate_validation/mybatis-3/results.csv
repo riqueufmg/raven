@@ -1,8 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
-mybatis-3,IM,Insufficient Modularization,org.apache.ibatis.builder.xml.XMLMapperBuilder,class,78276f3933f69e1d3b53f15863dafb7aaf3240aa,5ceaaf4499b8500e08e649d859717b5393c2f80c,true,true,true,false,true,0,false
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.datasource.pooled,package,f5cdfaf0b7aed22cb0d807cad515d3b377b1a784,61fdd5149ba2748a8c0f405d4df2639835e40484,true,true,true,false,true,0,false
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.datasource.unpooled,package,69b382030ff6d7cd5e66b4ddd6e90e97ce4241c5,79f33a4a9438a3a8c6d0d60e71e4dc694b1a5c0b,true,true,true,false,true,0,false
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.datasource.unpooled,package,e7f76227fcab374e4e0e5b6fef32430212039b39,2a95406abedb8e481b551d17851d01bc3ef1a771,true,true,true,false,true,7,true
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.domain.misc,package,de9602ea1f8b19e6d35787f8487cdcd0d8ec3935,d51f3a7e2ae3b6fe2e3262a26c808f76f0e75576,true,true,true,false,true,0,false
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.reflection.invoker,package,de9602ea1f8b19e6d35787f8487cdcd0d8ec3935,d51f3a7e2ae3b6fe2e3262a26c808f76f0e75576,true,true,true,false,true,0,false
-mybatis-3,UD,Unstable Dependency,org.apache.ibatis.reflection.invoker,package,e7f76227fcab374e4e0e5b6fef32430212039b39,2a95406abedb8e481b551d17851d01bc3ef1a771,true,true,true,false,true,0,false

@@ -1,5 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
-spring-boot-admin,GC,God Component,de.codecentric.boot.admin,package,28273bdae652a6c5e6e2e00ea80dbb54d64ccf0b,975e421db548757eae4374548ebef8a46d65b6ee,true,true,true,false,true,4,true
-spring-boot-admin,IM,Insufficient Modularization,de.codecentric.boot.admin.server.notify.MicrosoftTeamsNotifier,class,ce125f965abdddff3afef70f988d9c9a47efa8dd,33c52b38222a2d7191c17a46fb99c9ce87822467,true,true,true,false,true,9,true
-spring-boot-admin,UD,Unstable Dependency,de.codecentric.boot.admin.server.cloud.discovery,package,5359d5cec85e5a0ddbc855d889eff3ab18d1294c,084c2cc17407fdc0f80bbe65abfb7ef5fa0bc296,true,true,true,false,true,0,false
-spring-boot-admin,UD,Unstable Dependency,de.codecentric.boot.admin.server.web,package,3104984278f484cf5a559fd425ffcd762d546cc4,436609aa4266dd2e1a6160d300b72965f068ed09,true,true,true,false,true,1,true

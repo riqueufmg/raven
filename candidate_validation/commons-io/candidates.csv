@@ -1,2 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,FirstParentOfCommitWithoutSmell,IsDirectChild,EntityExistsAfter,Classification,Package,Class,FileBefore
-commons-io,UD,Unstable Dependency,org.apache.commons.io.build,package,6d48b5f380acfeb138581e213efddedaaf9b7262,6df85e8e0b81f99c422b3700a973e758222c37ad,6d48b5f380acfeb138581e213efddedaaf9b7262,true,true,smell_removed_candidate,org.apache.commons.io.build,,

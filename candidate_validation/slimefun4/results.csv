@@ -1,9 +1,0 @@
-Repository,SmellAlias,Smell,Entity,Granularity,CommitWithSmell,CommitWithoutSmell,DirectChild,EntityExistsAfter,SmellInC,SmellInCPrime,SmellRemoved,RefactoringCount,Valid
-slimefun4,IM,Insufficient Modularization,io.github.thebusybiscuit.slimefun4.implementation.items.geo.GEOMiner,class,7d4ed2b3353e4121b6262ddb3c5959d1ec657e00,9a6461760921779f1b8b81d0e8f9b76892434633,true,true,true,false,true,1,true
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.implementation.items.tools,package,b9c6c22f7351768fb75ca0d9f685a8bf6450a1b4,811933b1eb5cbb3147d7938332288dc147f5449d,true,true,true,false,true,0,false
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.implementation.setup,package,3ac8cadbc1f00cf9c5cbab544dc18b39806eacc5,0a8aff0695d17af7350160f5c075aae302d5d141,true,true,true,false,true,1,true
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.implementation.setup,package,8114729e1635f362175ffb9dbf8a45700f4bd673,96aaa9de4382e42fd75acbfd1311a025503843c0,true,true,true,false,true,0,false
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.implementation.setup,package,84dc09639302891c5ca64c6d21470fd4cc0fef56,32ded14292def9a8dd586150b14398242bdf7598,true,true,true,false,true,1,true
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.implementation.setup,package,9d388445c115eacd8cd16fc10de7f688b86876bb,72d9e1edd44798e9652293bb9c4914698fee5c81,true,true,true,false,true,1,true
-slimefun4,UD,Unstable Dependency,io.github.thebusybiscuit.slimefun4.utils.biomes,package,5ba049d29cada72dcd4a71087de39850bd328cc5,829a7d6bf624997bbd713e2ae224603aaf879f54,true,true,true,false,true,0,false
-slimefun4,UD,Unstable Dependency,me.mrCookieSlime.Slimefun.api,package,3ac8cadbc1f00cf9c5cbab544dc18b39806eacc5,0a8aff0695d17af7350160f5c075aae302d5d141,true,true,true,false,true,0,false
