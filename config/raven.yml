@@ -1,6 +1,6 @@
 repository:
-  url: https://github.com/jitsi/jitsi.git
-  branch: master
+  url: https://github.com/spiculedata/saiku
+  branch: development
 analysis:
   since: 11-11-2020
   smells:

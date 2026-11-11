@@ -1866,6 +1866,30 @@ def render_candidates_page() -> None:
     )
 
 
+def build_smells_export(targets: list[dict]) -> bytes:
+    rows = []
+
+    for target in targets:
+        for candidate in target["candidates"]:
+            rows.append(
+                {
+                    "Repository": target["repository"],
+                    "C": candidate["CommitWithSmell"],
+                    "C'": candidate["CommitWithoutSmell"],
+                    "FQN": candidate["Entity"],
+                    "Smells": candidate["SmellAlias"],
+                    "Reproduce": target["state"],
+                }
+            )
+
+    columns = ["Repository", "C", "C'", "FQN", "Smells", "Reproduce"]
+    table = pd.DataFrame(rows, columns=columns)
+    table = table.sort_values(
+        columns, kind="stable"
+    ).reset_index(drop=True)
+    return table.to_csv(index=False).encode("utf-8-sig")
+
+
 def render_results_page() -> None:
     st.title(
         "Results"
@@ -1917,6 +1941,24 @@ def render_results_page() -> None:
         if repository_selection
         == "All repositories"
         else repository_selection
+    )
+
+    export_targets = [
+        target
+        for target in catalog["targets"]
+        if (
+            selected_repository is None
+            or target["repository"] == selected_repository
+        )
+    ]
+
+    st.download_button(
+        "Export Smells",
+        data=build_smells_export(export_targets),
+        file_name="smells.csv",
+        mime="text/csv",
+        disabled=not export_targets,
+        key="export_smells_csv",
     )
 
     try:
